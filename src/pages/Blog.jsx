@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import api from "../blog/blogApi"; //mock api
+import blogApi from "../blog/blogApi"; //mock api
 
 function Blog() {
 
-  const blog = api.getPosts(); //get all blog posts\
+  const blog = blogApi.getPosts(); //get all blog posts\
 
   if(!blog) return <div>Loading...</div>;
 
