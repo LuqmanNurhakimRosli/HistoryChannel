@@ -6,7 +6,7 @@ export default function Dashboard() {
 
   return (
     <div>
-        <h1>Welcome toDashboard ! {user? user.email : "guest"} </h1>
+        <h1>Welcome to Dashboard ! {user ? user.displayName : "guest"} </h1>
         <p>This is the Dashboard page.</p>
         <Link to="/about">About</Link>
     </div>

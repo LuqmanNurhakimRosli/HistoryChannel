@@ -27,29 +27,26 @@ function Header() {
                 Blog
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/profile" className={({ isActive }) => (isActive ? "active" : "")}>
-                Profile
-              </NavLink>
-            </li>
 
-            {/* Show Dashboard if User is Logged In */}
+            {/* Show Dashboard and Profile if User is Logged In */}
             {user && (
-              <li>
-                <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Dashboard
-                </NavLink>
-              </li>
+              <>
+                <li>
+                  <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "active" : "")}>
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/profile" className={({ isActive }) => (isActive ? "active" : "")}>
+                    Profile
+                  </NavLink>
+                </li>
+              </>
             )}
 
             {/* Show Login/Register if Not Logged In */}
             {!user ? (
               <>
-              <li>
-                  <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "active" : "")}>
-                    Dashboard
-                  </NavLink>
-                </li>
                 <li>
                   <NavLink to="/login" className={({ isActive }) => (isActive ? "active" : "")}>
                     Login
@@ -63,7 +60,7 @@ function Header() {
               </>
             ) : (
               <li>
-                <button onClick={logout} className="logout-btn">
+                <button onClick={logout} className="logout-btn" aria-label="Logout">
                   Logout
                 </button>
               </li>
