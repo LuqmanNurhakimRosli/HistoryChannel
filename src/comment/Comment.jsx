@@ -1,56 +1,41 @@
-// Comment.jsx
-import { useState, useEffect } from 'react';
-import {useAuth} from '../context/AuthContext';
-import { addComment, getCommentsByPostId } from './commentApi';
+import { useAuth } from "../context/AuthContext";
+import { deleteComment } from "../comment/commentApi";
+import PropTypes from "prop-types";
 
-function Comment({ postId }) {
+const Comment = ({ comment, refreshComments }) => {
     const { user } = useAuth();
-    const [comments, setComments] = useState([]);
-    const [text, setText] = useState('');
 
-    //load comments from firestore
-    useEffect(() => {
-        const fetchComments = async () => {
-            const commentsData = await getCommentsByPostId(postId);
-            setComments(commentsData);
-        };
-        fetchComments();
-    }, [postId]);
-
-    //handle submitting a new comment
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if(!user) {
-            alert("You must be logged in to comment.");
-            return;
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this comment?")) {
+            try {
+                await deleteComment(comment.id); // Call deleteComment with the comment ID
+                refreshComments(); // Refresh comments after deletion
+            } catch (error) {
+                console.error("Error deleting comment:", error);
+            }
         }
-        const newComment = await addComment(postId, user.email, text);
-        setComments([...comments, newComment]);
-        setText('');
     };
 
     return (
-        <div>
-            <h3>Comments</h3>
-            {comments.map((comment) => (
-                <div key={comment.id}>
-                    <strong>{comment.author}</strong>: {comment.text}
-                </div>
-            ))}
-            {user && (
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Add a comment..."
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                    />
-                    <button type="submit">Comment</button>
-                </form>
+        <div className="comment-box">
+            <p>
+                <strong>{comment.userEmail}</strong>: {comment.text}
+            </p>
+            {user && user.uid === comment.userId && (
+                <button className="delete-btn" onClick={handleDelete}>Delete</button>
             )}
         </div>
-    )
+    );
+};
 
+Comment.propTypes = {
+    comment: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        userEmail: PropTypes.string.isRequired,
+        userId: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+    }).isRequired,
+    refreshComments: PropTypes.func.isRequired,
+};
 
-}
 export default Comment;

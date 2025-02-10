@@ -1,31 +1,40 @@
 //to retrieve all comments
 //add new commnt
 // delete comment
+//CRUD condept (create, read, update, delete)
 
-import {db} from "../firebase";
-import { collection, addDoc, query, getDocs, where } from "firebase/firestore";
+import { db } from "../firebase";
+import { collection, addDoc, query, getDocs, where, deleteDoc, doc } from "firebase/firestore";
 
 const COMMENTS_COLLECTION = "comments";
 
-//fetch comments by id
+// Fetch comments by postId (blog ID)
 export const getCommentsByPostId = async (postId) => {
     const q = query(collection(db, COMMENTS_COLLECTION), where("postId", "==", postId));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => doc.data());
-}
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
 
-// ✅ Add a new comment to Firestore
-export const addComment = async (postId, author, text) => {
+// Add a comment to Firestore, associating it with the blog's postId
+export const addComment = async (postId, user, text) => {
     try {
-      const docRef = await addDoc(collection(db, COMMENTS_COLLECTION), {
-        postId,
-        author,
-        text,
-        createdAt: new Date()
-      });
-      return { id: docRef.id, postId, author, text, createdAt: new Date() };
+        await addDoc(collection(db, COMMENTS_COLLECTION), {
+            postId,  // Make sure to associate with the blog post ID
+            userId: user.uid,
+            userEmail: user.email,
+            text,
+            createdAt: new Date(),
+        });
     } catch (error) {
-      console.error("Error adding comment: ", error);
-      throw new Error("Could not add comment");
+        console.error("Error adding comment: ", error);
     }
-  };
+};
+
+// Delete a comment from Firestore
+export const deleteComment = async (commentId) => {
+    try {
+        await deleteDoc(doc(db, COMMENTS_COLLECTION, commentId));
+    } catch (error) {
+        console.error("Error deleting comment: ", error);
+    }
+};
