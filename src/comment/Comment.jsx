@@ -1,49 +1,56 @@
 // Comment.jsx
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+import {useAuth} from '../context/AuthContext';
+import { addComment, getCommentsByPostId } from './commentApi';
 
-function Comment({ comments }) {
-    const [newComment, setNewComment] = useState('');
+function Comment({ postId }) {
+    const { user } = useAuth();
+    const [comments, setComments] = useState([]);
+    const [text, setText] = useState('');
 
-    const handleCommentChange = (e) => {
-        setNewComment(e.target.value);
-    };
+    //load comments from firestore
+    useEffect(() => {
+        const fetchComments = async () => {
+            const commentsData = await getCommentsByPostId(postId);
+            setComments(commentsData);
+        };
+        fetchComments();
+    }, [postId]);
 
-    const handleCommentSubmit = (e) => {
+    //handle submitting a new comment
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Here you can handle the logic to save the comment
-        console.log('New Comment:', newComment);
-        setNewComment(''); // Clear the input after submission
+        if(!user) {
+            alert("You must be logged in to comment.");
+            return;
+        }
+        const newComment = await addComment(postId, user.email, text);
+        setComments([...comments, newComment]);
+        setText('');
     };
 
     return (
         <div>
-            <h2>Comments</h2>
-            <form onSubmit={handleCommentSubmit}>
-                <textarea
-                    value={newComment}
-                    onChange={handleCommentChange}
-                    placeholder="Add a comment..."
-                    required
-                />
-                <button type="submit">Submit</button>
-            </form>
-            <ul>
-                {comments.map((comment, index) => (
-                    <li key={index}>
-                        <strong>{comment.author}</strong>: {comment.text}
-                    </li>
-                ))}
-            </ul>
+            <h3>Comments</h3>
+            {comments.map((comment) => (
+                <div key={comment.id}>
+                    <strong>{comment.author}</strong>: {comment.text}
+                </div>
+            ))}
+            {user && (
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Add a comment..."
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                    />
+                    <button type="submit">Comment</button>
+                </form>
+            )}
         </div>
-    );
+    )
+
+
 }
-
-Comment.propTypes = {
-  comments: PropTypes.arrayOf(PropTypes.shape({
-    author: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-  })).isRequired,
-};
-
 export default Comment;

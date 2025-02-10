@@ -2,30 +2,30 @@
 //add new commnt
 // delete comment
 
-const comments = [
-    {
-        author: "John Doe",
-        text: "This blog is great!"
-    },
-    {
-        author: "Jane Doe",
-        text: "I agree!"
+import {db} from "../firebase";
+import { collection, addDoc, query, getDocs, where } from "firebase/firestore";
+
+const COMMENTS_COLLECTION = "comments";
+
+//fetch comments by id
+export const getCommentsByPostId = async (postId) => {
+    const q = query(collection(db, COMMENTS_COLLECTION), where("postId", "==", postId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => doc.data());
+}
+
+// ✅ Add a new comment to Firestore
+export const addComment = async (postId, author, text) => {
+    try {
+      const docRef = await addDoc(collection(db, COMMENTS_COLLECTION), {
+        postId,
+        author,
+        text,
+        createdAt: new Date()
+      });
+      return { id: docRef.id, postId, author, text, createdAt: new Date() };
+    } catch (error) {
+      console.error("Error adding comment: ", error);
+      throw new Error("Could not add comment");
     }
-];
-
-// Fetch comments
-export const fetchComments = () => {
-    return comments;
-};
-
-// Add a comment
-export const addComment = (comment) => {
-    comments.push(comment);
-};
-
-// Delete a comment by index
-export const deleteComment = (index) => {
-    if (index > -1 && index < comments.length) {
-        comments.splice(index, 1);
-    }
-};
+  };
