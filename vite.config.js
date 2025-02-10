@@ -1,7 +1,13 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-})
+export default {
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split libraries into their own chunks
+          vendor: ['react', 'react-dom', 'axios'], // Example libraries to chunk
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000, // Optionally increase the warning limit
+  },
+};
