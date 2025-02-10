@@ -1,0 +1,12 @@
+/* Home.css */
+.carousel .slide {
+    background: #fff;
+  }
+  
+  .carousel .legend {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+  }

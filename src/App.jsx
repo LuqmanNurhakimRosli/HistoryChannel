@@ -3,11 +3,12 @@ import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 
-
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
-import About from "./pages/About";
+import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
+
+import BlogDetail from "./blog/BlogDetail";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -26,7 +27,8 @@ function App() {
         <Route element={<MainLayout />}>
           {/* Public Routes */}
           <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
+          <Route path="blog" element={<Blog />} />    
+          <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
 
