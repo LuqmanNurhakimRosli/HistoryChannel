@@ -17,6 +17,8 @@ import Register from "./auth/Register";
 import Dashboard from "./dashboard/Dashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for react-toastify
+
 import "./App.css";
 
 function App() {
