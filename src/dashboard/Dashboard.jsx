@@ -8,7 +8,7 @@ export default function Dashboard() {
     <div>
         <h1>Welcome to Dashboard ! {user ? user.displayName : "guest"} </h1>
         <p>This is the Dashboard page.</p>
-        <Link to="/about">About</Link>
+        <Link to="/blog">Blog</Link>
     </div>
   )
 }
