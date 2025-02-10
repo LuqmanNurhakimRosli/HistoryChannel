@@ -19,8 +19,7 @@ function Blog() {
                 <Link to={`/blog/${blog.id}`}>
                  <div>
                   <h2>{blog.title}</h2>
-                  <strong>{blog.author}</strong>
-                  <strong>{blog.date}</strong>
+                  <strong>{blog.author}</strong> | <strong>{blog.date}</strong>
                  </div>
                 </Link>
   
