@@ -12,6 +12,7 @@ import BlogDetail from "./blog/BlogDetail";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
+import Profile from "./pages/Profile";
 
 import Dashboard from "./dashboard/Dashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";
@@ -29,6 +30,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="blog" element={<Blog />} />    
           <Route path="/blog/:id" element={<BlogDetail />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
 

@@ -27,7 +27,11 @@ function Header() {
                 Blog
               </NavLink>
             </li>
-            
+            <li>
+              <NavLink to="/profile" className={({ isActive }) => (isActive ? "active" : "")}>
+                Profile
+              </NavLink>
+            </li>
 
             {/* Show Dashboard if User is Logged In */}
             {user && (
