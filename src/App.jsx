@@ -7,12 +7,12 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
 
 import BlogDetail from "./blog/BlogDetail";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
-import Profile from "./pages/Profile";
 
 import Dashboard from "./dashboard/Dashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";

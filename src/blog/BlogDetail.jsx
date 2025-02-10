@@ -4,7 +4,7 @@ import Comment from "../comment/Comment";
 import CommentForm from "../comment/CommentForm";
 import { useAuth } from "../context/AuthContext";
 import { getCommentsByPostId } from "../comment/commentApi";
-import api from "./blogApi"; // Import the blog API
+import blogApi from "./blogApi"; // Import the blog API
 
 const BlogDetail = () => {
   const { id } = useParams(); // Get blog post ID from URL
@@ -16,7 +16,7 @@ const BlogDetail = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const fetchedBlog = await api.getPostById(Number(id)); // Fetch from API
+        const fetchedBlog = await blogApi.getPostById(Number(id)); // Fetch from API
         setBlog(fetchedBlog);
       } catch (error) {
         console.error("Error fetching blog post: ", error);

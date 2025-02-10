@@ -4,7 +4,7 @@ import { updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
-const ProfilePage = () => {
+const Profile = () => {
   const { user } = useAuth();  // Access authenticated user from context
   const [username, setUsername] = useState(user?.displayName || "");  // Set the current displayName as default
   const [error, setError] = useState(null);  // To handle errors during the update
@@ -52,4 +52,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default Profile;
