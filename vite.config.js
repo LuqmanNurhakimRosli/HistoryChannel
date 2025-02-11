@@ -5,14 +5,12 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['react-toastify'], // Exclude react-toastify from the bundle
       output: {
         manualChunks: {
-          // Split libraries into their own chunks
-          vendor: ['react', 'react-dom', 'axios'], // Example libraries to chunk
+          vendor: ['react', 'react-dom', 'axios', 'react-toastify'], // Bundle libraries with the app
         },
       },
     },
-    chunkSizeWarningLimit: 1000, // Optionally increase the warning limit
+    chunkSizeWarningLimit: 1000, // Increase chunk size warning limit
   },
 });
