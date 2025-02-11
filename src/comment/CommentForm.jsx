@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { addComment } from "./commentApi"; 
 import { useAuth } from "../context/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase"; // Adjust the import path as needed
 import PropTypes from "prop-types";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const CommentForm = ({ postId, refreshComments }) => {
   const { user } = useAuth();
@@ -38,7 +38,7 @@ const CommentForm = ({ postId, refreshComments }) => {
       console.log("Submitting comment:", { postId, userId: user.uid, commentText });
       await addComment(postId, user.uid, commentText); // Call the addComment function
       setCommentText(""); // Clear the comment input
-      setTimeout(refreshComments, 1000); // Refresh comments with slight delay
+      setTimeout(refreshComments, 500); // Refresh comments with slight delay
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -57,7 +57,6 @@ const CommentForm = ({ postId, refreshComments }) => {
     </form>
   );
 };
-
 
 CommentForm.propTypes = {
   postId: PropTypes.string.isRequired,
