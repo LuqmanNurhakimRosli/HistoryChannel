@@ -1,11 +1,12 @@
 import '../App.css'
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer>
         <div>
-            &copy; 2022 History Channel. All rights reserved.
+            &copy; {currentYear} Diary Cat. All Eyes on Cat.
         </div>
     </footer>
   )

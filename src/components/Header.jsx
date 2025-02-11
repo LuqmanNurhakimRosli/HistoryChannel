@@ -11,8 +11,8 @@ function Header() {
         <div className="nav-container">
           {/* Logo Section */}
           <Link to="/" className="logo" aria-label="Go to Home">
-            <img src="/logo.svg" alt="History Channel Logo" />
-            <h1>History Channel</h1>
+            <img src="/cat.svg" alt="Diary Cat Logo" />
+            <h1>Diary Cat</h1>
           </Link>
 
           {/* Navigation Links */}
