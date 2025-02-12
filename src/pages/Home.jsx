@@ -1,29 +1,18 @@
-// import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
-import './Home.css';
+import './Home.css'; // Import the Home.css file
 
 function Home() {
   return (
-    <section>
-      <div className="home">
-        <h1>Home</h1>
-        <p>This is the Home page.</p>
-
-        {/* Carousel Component */}
-        {/* <Carousel>
-          <div>
-            <img src="https://via.placeholder.com/600x400?text=Slide+1" alt="Slide 1" />
-            <p className="legend">Slide 1</p>
-          </div>
-          <div>
-            <img src="https://via.placeholder.com/600x400?text=Slide+2" alt="Slide 2" />
-            <p className="legend">Slide 2</p>
-          </div>
-          <div>
-            <img src="https://via.placeholder.com/600x400?text=Slide+3" alt="Slide 3" />
-            <p className="legend">Slide 3</p>
-          </div>
-        </Carousel> */}
+    <section className="bg-gray-50 py-16">
+      <div className="container mx-auto text-center">
+        <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
+          WELCOME TO MY BLOG
+        </h1>
+        <p className="text-lg text-gray-600 mb-8">Only Blogs</p>
+        <div className="mt-8">
+          <a href="/blog" className="inline-block px-6 py-3 text-lg text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-all duration-300">
+            Explore Blogs
+          </a>
+        </div>
       </div>
     </section>
   );

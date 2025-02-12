@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useState, useEffect } from "react";
+import { 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  signInWithRedirect, 
+  getRedirectResult, 
+  GoogleAuthProvider 
+} from "firebase/auth";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,7 +18,22 @@ function Login() {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
-  //untuk basic email/password login
+  useEffect(() => {
+    // Handle Google login redirect result when returning from browser
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          toast.success("Logged in with Google!");
+          navigate("/dashboard");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Google login failed!");
+      });
+  }, [navigate]);
+
+  // Email/Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -27,13 +48,20 @@ function Login() {
     }
   };
 
-
-  //untuk gmail logout
+  // Google Login (Handles Web & Mobile)
   const handleGoogleLogin = async () => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
     try {
-      await signInWithPopup(auth, googleProvider);
-      toast.success("Logged in with Google!");
-      navigate("/dashboard");
+      if (isMobile) {
+        // Mobile: Use Redirect
+        await signInWithRedirect(auth, googleProvider);
+      } else {
+        // Desktop Web: Use Popup
+        await signInWithPopup(auth, googleProvider);
+        toast.success("Logged in with Google!");
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.error(err);
       toast.error("Google login failed!");
@@ -66,7 +94,6 @@ function Login() {
         Sign in with Google
       </button>
 
-      
       <p>
         Do not have an account? <Link to="/register" className="text-blue-500">Register</Link>
       </p>

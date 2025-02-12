@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
-const CommentForm = ({ postId, refreshComments }) => {
+const CommentForm = ({ postId, refreshComments, className = "" }) => {
   const { user } = useAuth();
   const [commentText, setCommentText] = useState("");
   const [username, setUsername] = useState(""); // Store fetched username
@@ -35,7 +35,13 @@ const CommentForm = ({ postId, refreshComments }) => {
     if (!user) return; // Ensure user is authenticated
 
     try {
-      console.log("Submitting comment:", { postId, userId: user.uid, commentText });
+      const currentDate = new Date(); // Get the current date and time
+      console.log("Submitting comment:", { 
+        postId, 
+        userId: user.uid, 
+        commentText, 
+        createdAt: currentDate.toISOString() // Log the date in ISO format
+      });
       await addComment(postId, user.uid, commentText); // Call the addComment function
       setCommentText(""); // Clear the comment input
       setTimeout(refreshComments, 500); // Refresh comments with slight delay
@@ -45,15 +51,30 @@ const CommentForm = ({ postId, refreshComments }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {username && <p>Commenting as: <strong>{username}</strong></p>} {/* Display username */}
+    <form 
+      onSubmit={handleSubmit} 
+      className={`bg-gray-100 p-4 rounded-lg space-y-4 ${className}`}
+    >
+      {username && (
+        <p className="text-gray-700 text-sm">
+          Commenting as: <strong className="text-gray-900">{username}</strong>
+        </p>
+      )}
       <textarea
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Write a comment..."
         required
+        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y min-h-[100px]"
       />
-      <button type="submit" disabled={!user}>Submit</button>
+      <button 
+        type="submit" 
+        disabled={!user || !commentText.trim()}
+        className="w-1/2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200 
+                   disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
+        Submit Comment
+      </button>
     </form>
   );
 };
@@ -61,6 +82,7 @@ const CommentForm = ({ postId, refreshComments }) => {
 CommentForm.propTypes = {
   postId: PropTypes.string.isRequired,
   refreshComments: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default CommentForm;

@@ -1,12 +1,54 @@
 /* Home.css */
-.carousel .slide {
-    background: #fff;
+
+/* Define the animation for sliding the words in */
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
   }
-  
-  .carousel .legend {
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    padding: 10px;
-    font-size: 16px;
-    text-align: center;
+  100% {
+    transform: translateX(0);
+    opacity: 1;
   }
+}
+
+.animate-slideIn {
+  display: inline-block;
+  opacity: 0;
+  animation: slideIn 1s forwards;
+}
+
+/* Apply a delay to each word */
+.animate-delay-1 {
+  animation-delay: 0s;
+}
+
+.animate-delay-2 {
+  animation-delay: 1s;
+}
+
+.animate-delay-3 {
+  animation-delay: 2s;
+}
+
+.animate-delay-4 {
+  animation-delay: 3s;
+}
+
+.animate-delay-5 {
+  animation-delay: 4s;
+}
+
+/* Additional styles for the section */
+.bg-gray-50 {
+  background-image: linear-gradient(to bottom right, #f8fafc, #e2e8f0);
+}
+
+/* Button styles */
+button {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}

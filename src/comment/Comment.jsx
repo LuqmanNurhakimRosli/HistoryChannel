@@ -1,8 +1,10 @@
 import { useAuth } from "../context/AuthContext";
 import { deleteComment } from "./commentApi";
 import PropTypes from "prop-types";
+import { formatDistanceToNow } from "date-fns";
+import profileDefault from "../assets/default-profile.png";
 
-const Comment = ({ comment, refreshComments }) => {
+const Comment = ({ comment, refreshComments, className = "" }) => {
   const { user } = useAuth();
 
   const handleDelete = async () => {
@@ -16,14 +18,38 @@ const Comment = ({ comment, refreshComments }) => {
     }
   };
 
+  const formattedDate = comment.createdAt
+    ? formatDistanceToNow(new Date(comment.createdAt.seconds * 1000), { addSuffix: true })
+    : "Just now";
+
   return (
-    <div>
-      <p>
-        <strong>{comment.username}</strong>: {comment.text}
-      </p>
-      {user && user.uid === comment.userId && (
-        <button onClick={handleDelete}>Delete</button>
-      )}
+    <div className={`flex items-start space-x-4 p-4 border-b border-gray-300 ${className}`}>
+      <div className="flex-shrink-0">
+        {/* Placeholder for profile picture */}
+        <img
+          src={profileDefault} // Replace with actual user profile image
+          alt="User Avatar"
+          className="w-10 h-10 rounded-full object-cover"
+        />
+      </div>
+      <div className="flex-1">
+        <div className="flex justify-between">
+          <div>
+            <p className="font-semibold text-gray-900">{comment.username}</p>
+            <p className="text-gray-600">{comment.text}</p>
+          </div>
+          <p className="text-sm text-gray-500">{formattedDate}</p>
+        </div>
+        {user && user.uid === comment.userId && (
+          <button
+          onClick={handleDelete}
+          className="bg-red-500 text-white text-sm font-semibold py-1 px-3 rounded-md hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200"
+          aria-label="Delete comment"
+        >
+          Delete
+        </button>
+        )}
+      </div>
     </div>
   );
 };
@@ -34,8 +60,13 @@ Comment.propTypes = {
     username: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
+    createdAt: PropTypes.shape({
+      seconds: PropTypes.number,
+      nanoseconds: PropTypes.number,
+    }),
   }).isRequired,
   refreshComments: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default Comment;

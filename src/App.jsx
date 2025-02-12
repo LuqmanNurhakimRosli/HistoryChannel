@@ -32,13 +32,13 @@ function App() {
           <Route index element={<Home />} />
           <Route path="blog" element={<Blog />} />    
           <Route path="/blog/:id" element={<BlogDetail />} />
-          <Route path="profile" element={<Profile />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
 
           {/* Protected Route Inside MainLayout */}
           <Route element={<ProtectedRoute />}>
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           {/* 404 Page */}
