@@ -17,19 +17,16 @@ const EditBlog = () => {
     const fetchBlog = async () => {
       try {
         const blogData = await blogApi.getPostById(id);
-        
         if (!blogData) {
           toast.error("Blog not found.");
           navigate("/dashboard/manage-blog");
           return;
         }
-
         if (blogData.authorId !== user.uid && user.email !== "nadi@yes.com") {
           toast.error("You are not authorized to edit this blog.");
           navigate("/dashboard/manage-blog");
           return;
         }
-
         setBlog(blogData);
         setEditTitle(blogData.title);
         setEditContent(blogData.content);
@@ -40,7 +37,6 @@ const EditBlog = () => {
         setLoading(false);
       }
     };
-
     fetchBlog();
   }, [id, user, navigate]);
 
@@ -83,7 +79,6 @@ const EditBlog = () => {
         
         {blog && (
           <div className="space-y-4">
-            {/* Title Input */}
             <input
               type="text"
               className="w-full p-3 border border-gray-300 rounded-lg text-lg font-semibold focus:ring-2 focus:ring-blue-400 focus:outline-none"
@@ -91,8 +86,6 @@ const EditBlog = () => {
               onChange={(e) => setEditTitle(e.target.value)}
               placeholder="Blog Title"
             />
-
-            {/* Content Textarea */}
             <textarea
               className="w-full p-3 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
               rows="6"
@@ -100,8 +93,6 @@ const EditBlog = () => {
               onChange={(e) => setEditContent(e.target.value)}
               placeholder="Write your blog content here..."
             />
-
-            {/* Action Buttons */}
             <div className="flex justify-between mt-4">
               <button
                 className="w-1/2 bg-blue-500 text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition duration-200"

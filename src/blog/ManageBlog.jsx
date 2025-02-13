@@ -14,19 +14,10 @@ const ManageBlog = () => {
       const fetchBlogs = async () => {
         try {
           const allBlogs = await blogApi.getPosts();
-          console.log("Fetched blogs:", allBlogs);  // Debugging
-          
           if (!Array.isArray(allBlogs)) {
             throw new Error("Invalid blog data format.");
           }
-
-          const userBlogs = allBlogs.filter(blog => {
-            console.log("Checking blog authorId:", blog.authorId, "against user UID:", user.uid);
-            return blog.authorId === user.uid;  // Ensure blog has an ID
-          });
-
-          console.log("User blogs after filtering:", userBlogs);  // Log filtered blogs
-
+          const userBlogs = allBlogs.filter(blog => blog.authorId === user.uid);
           setBlogs(userBlogs);
         } catch (error) {
           console.error("Error fetching blogs:", error);
@@ -51,7 +42,7 @@ const ManageBlog = () => {
             <p className="text-gray-600">{blog.content.slice(0, 100)}...</p>
             <button
               className="text-blue-500 mt-4"
-              onClick={() => navigate(`${blog.id}`)}  // Ensure this matches your route
+              onClick={() => navigate(`${blog.id}`)}
             >
               Edit / Delete
             </button>

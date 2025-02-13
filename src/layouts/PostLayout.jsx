@@ -2,8 +2,8 @@ import { Outlet, NavLink } from "react-router-dom";
 
 const PostLayout = () => {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-8">
-      <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="flex-grow w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mx-auto mt-8">
         <nav className="flex space-x-4 border-b-2 pb-2 mb-4">
           <NavLink 
             className={({ isActive }) => 

@@ -53,7 +53,7 @@ const BlogDetail = () => {
     : "Unknown";
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8 bg-white shadow-lg rounded-lg">
+    <div className="max-w-4xl mx-auto px-6 py-8 bg-white shadow-lg rounded-lg flex-grow">
       {/* Updated Back button to link to /blog */}
       <Link to="/blog" className="inline-block text-blue-600 hover:text-blue-800 mb-6 font-semibold text-left">
         &larr; Back to Blog

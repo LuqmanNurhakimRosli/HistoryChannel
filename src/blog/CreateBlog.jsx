@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { db } from '../firebaseConfig'; // Import Firestore config
+import { db } from '../firebaseConfig'; 
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,16 +11,10 @@ const CreateBlog = () => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  console.log("Logged-in User:", user);
-
-  // Get admin email from Vite environment variable
   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Admin check
     if (!user || user.email !== adminEmail) {
       toast.error("You are not authorized to post.");
       return;
@@ -28,7 +22,6 @@ const CreateBlog = () => {
 
     setLoading(true);
     try {
-      // Save blog post to Firebase Firestore
       const docRef = await addDoc(collection(db, "blog"), {
         title,
         content,
@@ -38,14 +31,10 @@ const CreateBlog = () => {
         createdAt: serverTimestamp(),
       });
 
-      // Update the authorId if necessary
       await updateAuthorId(docRef.id, user.uid);
-
       toast.success("Post created successfully!");
       setTitle('');
       setContent('');
-
-      // Redirect to the blog page
       navigate('/blog');
     } catch (error) {
       console.error("Error creating post:", error);
@@ -56,9 +45,9 @@ const CreateBlog = () => {
   };
 
   const updateAuthorId = async (blogId, newAuthorId) => {
-    const blogRef = doc(db, "blog", blogId); // Reference to the blog document
+    const blogRef = doc(db, "blog", blogId);
     await updateDoc(blogRef, {
-      authorId: newAuthorId // Update the authorId
+      authorId: newAuthorId
     });
   };
 
@@ -88,9 +77,7 @@ const CreateBlog = () => {
             />
             <button
               type="submit"
-              className={`px-6 py-3 text-white rounded-lg transition ${
-                loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
-              }`}
+              className={`px-6 py-3 text-white rounded-lg transition ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"}`}
               disabled={loading}
             >
               {loading ? "Posting..." : "Add Post"}

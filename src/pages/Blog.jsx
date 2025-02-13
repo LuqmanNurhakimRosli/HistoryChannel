@@ -33,7 +33,7 @@ function Blog() {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="w-full py-8 bg-gray-50 flex-grow">
       <div className="container mx-auto px-4">
         <h1 className="text-5xl font-extrabold text-center text-gray-800 mb-12">
           Latest Blog Posts

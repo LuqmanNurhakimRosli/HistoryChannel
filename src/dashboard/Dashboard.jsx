@@ -2,11 +2,11 @@
 
 const Dashboard = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <div>
-
-      </div>  
+    <div className="bg-gray-100 flex-grow flex flex-col items-center justify-center py-16">
+      <h1 className="text-5xl font-bold mb-4 text-gray-800">Dashboard</h1>
+      <div className="text-lg text-gray-600 text-center">
+        <p>Welcome to your dashboard! Here you can manage your blog posts.</p>
+      </div>
     </div>
   );
 };

@@ -12,14 +12,17 @@ a {
   text-decoration: none;
   color: inherit;
 }
+.flex-grow {
+  flex-grow: 1;
+}
 
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between; /* Changed from center to space-between */
   align-items: center;
-  margin-top: 10px;
-  min-height: 100vh;
+  margin: 10px 0;
+  min-height: calc(100vh - 50px); /* Adjust based on footer height */
 }
 
 
