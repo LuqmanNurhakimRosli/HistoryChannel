@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase"; // Firestore
+import { auth, db } from "../firebaseConfig"; // Firestore
 import profileDefault from "../assets/default-profile.png"; // Default profile image
 
 const Profile = () => {

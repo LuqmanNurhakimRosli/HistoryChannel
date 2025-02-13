@@ -1,8 +1,8 @@
-import { db } from "../firebase"; // Adjust the import path as needed
+import { db } from "../firebaseConfig"; // Adjust the import path as needed
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc } from "firebase/firestore";
 
 // Add a new comment to Firestore
-export const addComment = async (postId, userId, text) => {
+export const addComment = async (postId, userId, text, blogId) => {
   try {
     const userRef = collection(db, "users"); // Get users collection
     const userSnapshot = await getDocs(query(userRef, where("userId", "==", userId)));
@@ -15,7 +15,7 @@ export const addComment = async (postId, userId, text) => {
     const username = userData.username;
 
     await addDoc(collection(db, "comments"), {
-      postId,
+      blogId,
       userId,
       username,
       text,
@@ -30,9 +30,9 @@ export const addComment = async (postId, userId, text) => {
 };
 
 // Fetch comments for a specific post
-export const getCommentsByPostId = async (postId) => {
+export const getCommentsByPostId = async (blogId) => {
   try {
-    const q = query(collection(db, "comments"), where("postId", "==", postId));
+    const q = query(collection(db, "comments"), where("blogId", "==", blogId));
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map(doc => ({

@@ -8,7 +8,7 @@ import blogApi from "./blogApi";
 import { Link } from "react-router-dom";
 
 const BlogDetail = () => {
-  const { id } = useParams();
+  const { id: blogId } = useParams();
   const { user } = useAuth();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
@@ -16,26 +16,26 @@ const BlogDetail = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const fetchedBlog = await blogApi.getPostById(Number(id));
+        const fetchedBlog = await blogApi.getPostById(blogId);
         setBlog(fetchedBlog);
       } catch (error) {
         console.error("Error fetching blog post: ", error);
       }
     };
     fetchBlog();
-  }, [id]);
+  }, [blogId]);
 
   useEffect(() => {
     const fetchComments = async () => {
-      const commentsData = await getCommentsByPostId(id);
+      const commentsData = await getCommentsByPostId(blogId);
       console.log("Fetched comments:", commentsData); // Debugging
       setComments(commentsData);
     };
     fetchComments();
-  }, [id]);
+  }, [blogId]);
 
   const refreshComments = async () => {
-    const commentsData = await getCommentsByPostId(id);
+    const commentsData = await getCommentsByPostId(blogId);
     setComments(commentsData);
   };
 
@@ -77,7 +77,7 @@ const BlogDetail = () => {
         <div className="mt-6">
           {user ? (
             <CommentForm 
-              postId={id} 
+              postId={blogId} 
               refreshComments={refreshComments} 
               className="bg-gray-100 p-4 rounded-lg shadow-sm"
             />

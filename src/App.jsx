@@ -15,9 +15,11 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 
 import Dashboard from "./dashboard/Dashboard";
+import PostLayout from "./layouts/PostLayout"; 
+import CreateBlog from "./blog/CreateBlog"; 
 import ProtectedRoute from "./auth/ProtectedRoute";
 
-import 'react-toastify/dist/ReactToastify.css'; // Import CSS for react-toastify
+import 'react-toastify/dist/ReactToastify.css'; 
 
 import "./App.css";
 
@@ -27,7 +29,7 @@ function App() {
       <ToastContainer />
       <Routes>
         {/* Wrap everything inside MainLayout to keep navbar and header */}
-        <Route element={<MainLayout />}>
+        <Route element={<MainLayout />}> 
           {/* Public Routes */}
           <Route index element={<Home />} />
           <Route path="blog" element={<Blog />} />    
@@ -36,9 +38,12 @@ function App() {
           <Route path="register" element={<Register />} />
 
           {/* Protected Route Inside MainLayout */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="profile" element={<Profile />} />
+          <Route element={<ProtectedRoute />}> 
+            <Route path="dashboard" element={<PostLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="createblog" element={<CreateBlog />} />
+            </Route>
+            <Route path="profile" element={<Profile />} /> 
           </Route>
 
           {/* 404 Page */}

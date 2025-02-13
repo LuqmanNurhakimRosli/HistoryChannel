@@ -3,7 +3,7 @@ import { addComment } from "./commentApi";
 import { useAuth } from "../context/AuthContext";
 import PropTypes from "prop-types";
 import { getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../firebaseConfig";
 
 const CommentForm = ({ postId, refreshComments, className = "" }) => {
   const { user } = useAuth();
