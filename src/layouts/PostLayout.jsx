@@ -22,6 +22,14 @@ const PostLayout = () => {
           >
             Create Blog
           </NavLink>
+          <NavLink 
+            className={({ isActive }) => 
+              isActive ? "active-link px-4 py-2 rounded-lg bg-blue-500 text-white" : 
+                         "default-link px-4 py-2 rounded-lg hover:bg-gray-200"} 
+            to="manage-blog"
+          >
+            Manage Blog
+          </NavLink>
         </nav>
         <Outlet />
       </div>

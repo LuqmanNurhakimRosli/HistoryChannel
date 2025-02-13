@@ -2,7 +2,7 @@ import { db } from "../firebaseConfig"; // Adjust the import path as needed
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc } from "firebase/firestore";
 
 // Add a new comment to Firestore
-export const addComment = async (postId, userId, text, blogId) => {
+export const addComment = async (postId, userId, text) => {
   try {
     const userRef = collection(db, "users"); // Get users collection
     const userSnapshot = await getDocs(query(userRef, where("userId", "==", userId)));
@@ -15,7 +15,7 @@ export const addComment = async (postId, userId, text, blogId) => {
     const username = userData.username;
 
     await addDoc(collection(db, "comments"), {
-      blogId,
+      blogId: postId, // This is the correct field for linking the post
       userId,
       username,
       text,

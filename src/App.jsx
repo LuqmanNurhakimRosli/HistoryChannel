@@ -18,6 +18,8 @@ import Dashboard from "./dashboard/Dashboard";
 import PostLayout from "./layouts/PostLayout"; 
 import CreateBlog from "./blog/CreateBlog"; 
 import ProtectedRoute from "./auth/ProtectedRoute";
+import ManageBlog from "./blog/ManageBlog";
+import EditBlog from "./blog/EditBlog";
 
 import 'react-toastify/dist/ReactToastify.css'; 
 
@@ -42,6 +44,8 @@ function App() {
             <Route path="dashboard" element={<PostLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="createblog" element={<CreateBlog />} />
+                <Route path="manage-blog" element={<ManageBlog />} />
+                <Route path="manage-blog/:id" element={<EditBlog />} />
             </Route>
             <Route path="profile" element={<Profile />} /> 
           </Route>

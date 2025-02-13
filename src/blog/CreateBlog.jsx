@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../firebaseConfig'; // Import Firestore config
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -13,7 +13,6 @@ const CreateBlog = () => {
   const navigate = useNavigate();
 
   console.log("Logged-in User:", user);
-
 
   // Get admin email from Vite environment variable
   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
@@ -30,13 +29,17 @@ const CreateBlog = () => {
     setLoading(true);
     try {
       // Save blog post to Firebase Firestore
-      await addDoc(collection(db, "blog"), {
+      const docRef = await addDoc(collection(db, "blog"), {
         title,
         content,
         author: user.displayName || "Admin",
         email: user.email,
+        authorId: user.uid,
         createdAt: serverTimestamp(),
       });
+
+      // Update the authorId if necessary
+      await updateAuthorId(docRef.id, user.uid);
 
       toast.success("Post created successfully!");
       setTitle('');
@@ -50,6 +53,13 @@ const CreateBlog = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const updateAuthorId = async (blogId, newAuthorId) => {
+    const blogRef = doc(db, "blog", blogId); // Reference to the blog document
+    await updateDoc(blogRef, {
+      authorId: newAuthorId // Update the authorId
+    });
   };
 
   return (

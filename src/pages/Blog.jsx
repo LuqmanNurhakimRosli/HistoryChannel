@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import blogApi from "../blog/blogApi"; // Mock API
+import {getPosts} from '../api/blogApi';
 
 function Blog() {
 const [blog, setBlog] = useState([])
 
 useEffect(() => {
   const fetchBlogs = async () => {
-    const data = await blogApi.getPosts();
+    const data = await getPosts();
     setBlog(data);
   }
   fetchBlogs();

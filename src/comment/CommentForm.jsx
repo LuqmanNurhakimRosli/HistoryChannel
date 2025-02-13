@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { addComment } from "./commentApi"; 
+import { addComment } from "../api/commentApi"; 
 import { useAuth } from "../context/AuthContext";
 import PropTypes from "prop-types";
 import { getDoc, doc } from "firebase/firestore";
@@ -42,7 +42,15 @@ const CommentForm = ({ postId, refreshComments, className = "" }) => {
         commentText, 
         createdAt: currentDate.toISOString() // Log the date in ISO format
       });
-      await addComment(postId, user.uid, commentText); // Call the addComment function
+      
+      // Ensure postId is valid and being passed correctly
+      if (!postId) {
+        console.error("Post ID is missing");
+        return;
+      }
+
+      // Call the addComment function with the postId, user.uid, and commentText
+      await addComment(postId, user.uid, commentText); 
       setCommentText(""); // Clear the comment input
       setTimeout(refreshComments, 500); // Refresh comments with slight delay
     } catch (error) {

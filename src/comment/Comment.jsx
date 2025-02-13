@@ -1,5 +1,5 @@
 import { useAuth } from "../context/AuthContext";
-import { deleteComment } from "./commentApi";
+import { deleteComment } from "../api/commentApi";
 import PropTypes from "prop-types";
 import { formatDistanceToNow } from "date-fns";
 import profileDefault from "../assets/default-profile.png";
