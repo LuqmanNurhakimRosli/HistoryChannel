@@ -1,42 +1,31 @@
-import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext"; 
 import { useNavigate } from "react-router-dom";
-import blogApi from "../api/blogApi"; 
+import useBlogPosts from "../hooks/useBlogPosts"; // Import the custom hook
+import "../App.css";
 
 const ManageBlog = () => {
   const { user } = useAuth();
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { posts, loading, error } = useBlogPosts(); // Use the custom hook
 
-  useEffect(() => {
-    if (user) {
-      const fetchBlogs = async () => {
-        try {
-          const allBlogs = await blogApi.getPosts();
-          if (!Array.isArray(allBlogs)) {
-            throw new Error("Invalid blog data format.");
-          }
-          const userBlogs = allBlogs.filter(blog => blog.authorId === user.uid);
-          setBlogs(userBlogs);
-        } catch (error) {
-          console.error("Error fetching blogs:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchBlogs();
-    }
-  }, [user]);
+  // Filter posts to show only the user's blogs
+  const userBlogs = user ? posts.filter(blog => blog.authorId === user.uid) : [];
 
-  if (loading) return <div>Loading...</div>;
-  if (!blogs.length) return <p>You have not written any blogs yet.</p>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="loading-spinner"></div>
+    </div>
+  );
+
+  if (error) return <p className="text-red-500 text-center">{error}</p>;
+
+  if (!userBlogs.length) return <p className="text-center text-gray-500">You have not written any blogs yet.</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">Manage Your Blog Posts</h1>
       <ul>
-        {blogs.map(blog => (
+        {userBlogs.map(blog => (
           <li key={blog.id} className="p-4 bg-white shadow-md rounded-lg mb-4">
             <h2 className="text-xl font-semibold">{blog.title}</h2>
             <p className="text-gray-600">{blog.content.slice(0, 100)}...</p>
