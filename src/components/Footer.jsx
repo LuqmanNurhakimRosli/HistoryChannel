@@ -4,9 +4,9 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer>
+    <footer>-
         <div>
-            &copy; {currentYear} Diary Cat. All Eyes on Cat.
+            &copy; {currentYear} OwlScribe. All Rights Reserved.
         </div>
     </footer>
   )
