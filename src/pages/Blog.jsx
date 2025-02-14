@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPosts } from "../api/blogApi";
 import { formatDistanceToNow, parseISO } from "date-fns"; // Import date functions
+import useBlogPosts from "../hooks/useBlogPosts";
+import '../App.css';
 
 function Blog() {
-  const [blog, setBlog] = useState([]);
+  const {posts: blog, loading, error} = useBlogPosts();
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      const data = await getPosts();
-      setBlog(data);
-    };
-    fetchBlogs();
-  }, []);
+  // useEffect(() => {
+  //   const fetchBlogs = async () => {
+  //     const data = await getPosts();
+  //     setBlog(data);
+  //   };
+  //   fetchBlogs();
+  // }, []);
 
   // Function to format the date like YouTube
   const formatDate = (dateString) => {
@@ -38,12 +38,20 @@ function Blog() {
         <h1 className="text-5xl font-extrabold text-center text-gray-800 mb-12">
           Latest Blog Posts
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {blog.map((post) => (
-            <div
-              key={post.id}
-              className="bg-white shadow-xl rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
-            >
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : error ? (
+          <div>{error.message}</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {/* Blog Cards */}
+            {blog.map((post) => (
+              <div
+                key={post.id}
+                className="bg-white shadow-xl rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
+                >
               <Link to={`/blog/${post.id}`} className="block p-6">
                 <div className="space-y-4">
                   <h2 className="text-3xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200">
@@ -58,6 +66,7 @@ function Blog() {
             </div>
           ))}
         </div>
+        )}
       </div>
     </section>
   );
