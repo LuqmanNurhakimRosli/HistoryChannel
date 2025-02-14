@@ -2,13 +2,13 @@ import './Home.css'; // Import the Home.css file
 
 function Home() {
   return (
-    <section className="w-full bg-gradient-to-br from-blue-100 to-blue-300 min-h-screen flex items-center justify-center text-center">
+    <section className=" w-full bg-gradient-to-br from-blue-100 to-blue-300 min-h-screen flex items-center justify-center text-center">
       <div className="container mx-auto px-6">
         <h1 className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 drop-shadow-lg tracking-wide">
-          Welcome to My Blog
+          Welcome to OwlScribe
         </h1>
         <p className="text-xl md:text-2xl text-gray-700 mb-8 italic">
-          Explore the world of <span className="font-semibold text-blue-800">Diary Cat Luna</span>
+          Explore the world of <span className="font-semibold text-blue-800">OwlScribe</span>
         </p>
         <div className="mt-8">
           <a

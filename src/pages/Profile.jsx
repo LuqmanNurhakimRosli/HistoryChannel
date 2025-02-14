@@ -56,10 +56,10 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded-lg">
-      <div className="flex items-center space-x-6 mb-6">
+    <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded-lg mt-10"> {/* Added mt-10 for spacing */}
+      <div className="flex flex-col md:flex-row justify-center items-center space-x-0 md:space-x-6 mb-6">
         {/* Default Profile Image */}
-        <div className="w-32 h-32">
+        <div className="w-32 h-32 mb-4 md:mb-0">
           <img
             src={profileDefault}
             alt="Default Profile"
@@ -72,9 +72,9 @@ const Profile = () => {
           <p className="text-lg text-gray-700">{user?.email}</p>
         </div>
       </div>
-
+  
       <hr className="border-t border-gray-200 mb-6" />
-
+  
       {/* Change Username Section */}
       <div className="mb-6">
         <label htmlFor="username" className="block text-lg font-medium text-gray-700">
@@ -88,11 +88,11 @@ const Profile = () => {
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-
+  
       {/* Error or Success Message */}
       {error && <p className="text-red-500 mb-2">{error}</p>}
       {success && <p className="text-green-500 mb-2">{success}</p>}
-
+  
       {/* Save Button */}
       <button
         onClick={handleSave}
@@ -103,6 +103,7 @@ const Profile = () => {
       </button>
     </div>
   );
+  
 };
 
 export default Profile;

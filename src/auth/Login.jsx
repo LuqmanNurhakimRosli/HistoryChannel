@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { 
-  signInWithEmailAndPassword, 
-  signInWithPopup, 
-  signInWithRedirect, 
-  getRedirectResult, 
-  GoogleAuthProvider 
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  getRedirectResult,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FcGoogle } from "react-icons/fc";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -19,7 +19,6 @@ function Login() {
   const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
-    // Handle Google login redirect result when returning from browser
     getRedirectResult(auth)
       .then((result) => {
         if (result?.user) {
@@ -33,13 +32,12 @@ function Login() {
       });
   }, [navigate]);
 
-  // Email/Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Login Successful! Redirecting to dashboard...");
+      toast.success("Login Successful! Redirecting...");
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
@@ -48,20 +46,11 @@ function Login() {
     }
   };
 
-  // Google Login (Handles Web & Mobile)
   const handleGoogleLogin = async () => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
     try {
-      if (isMobile) {
-        // Mobile: Use Redirect
-        await signInWithRedirect(auth, googleProvider);
-      } else {
-        // Desktop Web: Use Popup
-        await signInWithPopup(auth, googleProvider);
-        toast.success("Logged in with Google!");
-        navigate("/dashboard");
-      }
+      await signInWithPopup(auth, googleProvider);
+      toast.success("Logged in with Google!");
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
       toast.error("Google login failed!");
@@ -69,34 +58,52 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-2xl font-bold">Login</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleLogin} className="flex flex-col space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="p-2 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="p-2 border rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit" className="p-2 bg-blue-500 text-white rounded">Login</button>
-      </form>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full text-center">
+        <h2 className="text-3xl font-extrabold text-gray-800">Welcome Back!</h2>
+        <p className="text-gray-500 mb-6">Sign in to continue</p>
 
-      <button onClick={handleGoogleLogin} className="mt-4 p-2 bg-red-500 text-white rounded">
-        Sign in with Google
-      </button>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      <p>
-        Do not have an account? <Link to="/register" className="text-blue-500">Register</Link>
-      </p>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white font-bold p-3 rounded hover:bg-blue-600 transition"
+          >
+            Login
+          </button>
+        </form>
+
+        <div className="mt-4">
+          <button
+            onClick={handleGoogleLogin}
+            className="flex items-center justify-center w-full bg-gray-100 text-gray-700 p-3 rounded hover:bg-gray-200 transition"
+          >
+            <FcGoogle className="mr-2 text-2xl" />
+            Sign in with Google
+          </button>
+        </div>
+
+        <p className="mt-4 text-gray-600"> Do not have an account?{" "}
+          <Link to="/register" className="text-blue-500 font-medium">
+            Register here
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
