@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 
 import BlogDetail from "./blog/BlogDetail";
-// import PrivateBlog from "./blog/PrivateBlog";
+import PrivateBlog from "./blog/PrivateBlog";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -38,10 +38,10 @@ function App() {
           <Route index element={<Home />} />
 
         <Route element={<FeedLayout />}>
-          <Route path="blog" element={<Blog filterType={useOutletContext()} />} />    
+          <Route path="blog" element={<Blog filterType={useOutletContext} />} />    
           <Route path="/blog/:id" element={<BlogDetail />} />
-          {/* <Route path="/private/" element={<PrivateBlog />} />
-          <Route path="/private/:id" element={<BlogDetail />} /> */}
+          <Route path="/private" element={<PrivateBlog />} />
+          <Route path="/private/:id" element={<BlogDetail />} />
         </Route>
 
 
