@@ -13,11 +13,17 @@ const CreateBlog = () => {
   const [publishOption, setPublishOption] = useState('forEveryone'); 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user || user.email !== adminEmail) {
+
+    if(!title.trim() || !content.trim() || !genre.trim() )
+    {
+      toast.error("Please fill all the fields.");
+      return;
+    }
+
+    if (!user) {
       toast.error("You are not authorized to post.");
       return;
     }
@@ -44,7 +50,7 @@ const CreateBlog = () => {
       if (publishOption === 'forEveryone') {
         navigate('/blog');
       } else {
-        navigate('/private');
+        navigate('/personal');
       }
     } catch (error) {
       console.error("Error creating post:", error);
@@ -64,7 +70,7 @@ const CreateBlog = () => {
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 text-center">Create Blog Post</h1>
 
-        {user && user.email === adminEmail ? (
+        {user ? (
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
             <input
               type="text"
@@ -90,13 +96,12 @@ const CreateBlog = () => {
                 className="w-full md:w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"
                 required
               >
-                <option value="Casual">Casual</option>
-                <option value="Action">Action</option>
-                <option value="Comedy">Comedy</option>
-                <option value="Drama">Drama</option>
-                <option value="Romance">Romance</option>
-                
-              </select>
+                <option value="" disabled selected>Select Genre</option>
+              <option value="Action">Action</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Casual">Casual</option>
+              <option value="Scary">Scary</option>
+            </select>
 
               <div className="flex space-x-4 mt-2 md:mt-0">
                 <label className="flex items-center space-x-2 cursor-pointer">

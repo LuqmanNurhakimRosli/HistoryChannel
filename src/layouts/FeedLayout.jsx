@@ -26,7 +26,7 @@ function FeedLayout() {
               ? "px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold shadow-md transition" 
               : "px-6 py-3 rounded-lg text-gray-700 bg-gray-200 hover:bg-blue-500 hover:text-white transition"
           } 
-          to="private"
+          to="personal"
         >
           Private
         </NavLink>

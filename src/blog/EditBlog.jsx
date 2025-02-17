@@ -103,11 +103,11 @@ const EditBlog = () => {
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
               required
             >
-              <option value="Casual">Casual</option>
+              <option value="" disabled selected>Select Genre</option>
               <option value="Action">Action</option>
               <option value="Comedy">Comedy</option>
-              <option value="Drama">Drama</option>
-              <option value="Romance">Romance</option>
+              <option value="Casual">Casual</option>
+              <option value="Scary">Scary</option>
             </select>
 
             <div className="flex space-x-4 mt-2 md:mt-0">

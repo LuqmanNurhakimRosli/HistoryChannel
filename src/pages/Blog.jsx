@@ -7,20 +7,27 @@ function Blog() {
   const { posts: blog, loading, error } = useBlogPosts();
 
   const formatDate = (dateString) => {
-    if (!dateString) return "Unknown";
+    if (!dateString) return "Unknown"; // Handle missing dates
     try {
-      const date = parseISO(dateString);
-      return formatDistanceToNow(date, { addSuffix: true });
+      // Check if the input is a Date object
+      if (dateString instanceof Date) {
+        return formatDistanceToNow(dateString, { addSuffix: true }); // Format as "x time ago"
+      }
+      
+      // If it's an ISO string, parse it
+      const date = parseISO(dateString); // Parse ISO date
+      return formatDistanceToNow(date, { addSuffix: true }); // Format as "x time ago"
     } catch (error) {
-      console.error("Error parsing date:", error);
-      return "Unknown";
+      console.error("Error parsing date:", error); // Log the error
+      return "Unknown"; // Return "Unknown" if parsing fails
     }
   };
+
 
   const publicPosts = blog.filter((post) => post.publishOption === true);
 
   return (
-    <section className="w-full py-8 bg-gray-50">
+    <section className="w-full py-8">
       <div className="container mx-auto px-4">
         {loading ? (
           <div className="flex justify-center items-center h-40">
@@ -41,7 +48,7 @@ function Blog() {
                       {post.title}
                     </h2>
                     <p className="text-sm text-gray-600">
-                      <span className="font-medium">{post.author}</span> • {formatDate(post.createdAt)}
+                      <span className="font-medium">{post.author}</span> | {formatDate(post.createdAt)}
                     </p>
                   </div>
                 </Link>
