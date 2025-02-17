@@ -2,7 +2,7 @@ import './Home.css'; // Import the Home.css file
 
 function Home() {
   return (
-    <section className=" w-full bg-gradient-to-br from-blue-100 to-blue-300 min-h-screen flex items-center justify-center text-center">
+    <section id="home" className=" w-full bg-gradient-to-br from-blue-100 to-blue-300 min-h-screen flex items-center justify-center text-center">
       <div className="container mx-auto px-6">
         <h1 className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 drop-shadow-lg tracking-wide">
           Welcome to OwlScribe
@@ -20,6 +20,7 @@ function Home() {
         </div>
       </div>
     </section>
+      
   );
 }
 
