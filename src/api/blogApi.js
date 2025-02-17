@@ -29,24 +29,28 @@ export const getPostById = async (id) => {
 };
 
 // Add new blog post
-export const addPost = async (title, content, author, authorId) => {
+export const addPost = async (title, content, author, authorId, genre, publishOption) => {
   const postData = {
     title,
     content,
     author,
     authorId,
-    createdAt: new Date()
+    createdAt: new Date(),
+    genre,
+    publishOption,
   };
   const docRef = await addDoc(collection(db, "blog"), postData);
   return { id: docRef.id, ...postData }; // Return the newly created post with ID
 };
 
 // Update blog post
-export const updatePost = async (id, title, content) => {
+export const updatePost = async (id, title, content, genre, publishOption) => {
   const postRef = doc(db, "blog", id);
   await updateDoc(postRef, {
     title,
     content,
+    genre,
+    publishOption,
   });
 };
 

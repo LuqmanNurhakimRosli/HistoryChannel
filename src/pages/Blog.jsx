@@ -6,14 +6,6 @@ import '../App.css';
 function Blog() {
   const {posts: blog, loading, error} = useBlogPosts();
 
-  // useEffect(() => {
-  //   const fetchBlogs = async () => {
-  //     const data = await getPosts();
-  //     setBlog(data);
-  //   };
-  //   fetchBlogs();
-  // }, []);
-
   // Function to format the date like YouTube
   const formatDate = (dateString) => {
     if (!dateString) return "Unknown"; // Handle missing dates
@@ -32,12 +24,14 @@ function Blog() {
     }
   };
 
+  const publicPosts = blog.filter((post) => post.publishOption === true);
+
   return (
     <section className="w-full py-8 bg-gray-50 flex-grow">
       <div className="container mx-auto px-4">
-        <h1 className="text-5xl font-extrabold text-center text-gray-800 mb-12">
+        {/* <h1 className="text-5xl font-extrabold text-center text-gray-800 mb-12">
           Latest Blog Posts
-        </h1>
+        </h1> */}
         {loading ? (
           <div className="loading-container">
             <div className="loading-spinner"></div>
@@ -47,7 +41,7 @@ function Blog() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {/* Blog Cards */}
-            {blog.map((post) => (
+            {publicPosts.map((post) => (
               <div
                 key={post.id}
                 className="bg-white shadow-xl rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"

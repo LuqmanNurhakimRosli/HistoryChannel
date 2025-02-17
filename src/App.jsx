@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useOutletContext } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
@@ -10,12 +10,14 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 
 import BlogDetail from "./blog/BlogDetail";
+// import PrivateBlog from "./blog/PrivateBlog";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 
 import Dashboard from "./dashboard/Dashboard";
 import PostLayout from "./layouts/PostLayout"; 
+import FeedLayout from "./layouts/FeedLayout"
 import CreateBlog from "./blog/CreateBlog"; 
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ManageBlog from "./blog/ManageBlog";
@@ -34,8 +36,15 @@ function App() {
         <Route element={<MainLayout />}> 
           {/* Public Routes */}
           <Route index element={<Home />} />
-          <Route path="blog" element={<Blog />} />    
+
+        <Route element={<FeedLayout />}>
+          <Route path="blog" element={<Blog filterType={useOutletContext()} />} />    
           <Route path="/blog/:id" element={<BlogDetail />} />
+          {/* <Route path="/private/" element={<PrivateBlog />} />
+          <Route path="/private/:id" element={<BlogDetail />} /> */}
+        </Route>
+
+
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
 

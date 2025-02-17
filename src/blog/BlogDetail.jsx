@@ -64,6 +64,8 @@ const BlogDetail = () => {
           <strong className="text-lg">{blog.author}</strong>
           <span className="text-sm">|</span>
           <strong className="text-sm text-gray-500">{formattedDate}</strong> {/* Display the formatted date */}
+          <span className="text-sm">|</span>
+          <strong className="text-sm text-gray-500">{blog.genre}</strong>
         </div>
         <p className="text-gray-800 leading-relaxed text-lg">{blog.content}</p>
       </article>

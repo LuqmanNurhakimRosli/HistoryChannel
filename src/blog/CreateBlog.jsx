@@ -9,6 +9,8 @@ const CreateBlog = () => {
   const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [genre, setGenre] = useState('');
+  const [publishOption, setPublishOption] = useState('forEveryone'); 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
@@ -25,6 +27,7 @@ const CreateBlog = () => {
       const docRef = await addDoc(collection(db, "blog"), {
         title,
         content,
+        genre,
         author: user.displayName || "Admin",
         email: user.email,
         authorId: user.uid,
@@ -35,7 +38,14 @@ const CreateBlog = () => {
       toast.success("Post created successfully!");
       setTitle('');
       setContent('');
-      navigate('/blog');
+      setGenre('');
+
+      // Navigate based on publish option
+      if (publishOption === 'forEveryone') {
+        navigate('/blog');
+      } else {
+        navigate('/private');
+      }
     } catch (error) {
       console.error("Error creating post:", error);
       toast.error("Failed to create post: " + error.message);
@@ -46,45 +56,89 @@ const CreateBlog = () => {
 
   const updateAuthorId = async (blogId, newAuthorId) => {
     const blogRef = doc(db, "blog", blogId);
-    await updateDoc(blogRef, {
-      authorId: newAuthorId
-    });
+    await updateDoc(blogRef, { authorId: newAuthorId });
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center py-16">
-      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg text-center">
-        <h1 className="text-4xl font-semibold text-gray-800 mb-4">Create Blog Post</h1>
-        <p className="text-lg text-gray-600 mb-6">Write and share your thoughts.</p>
+    <div >
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-md p-6">
+        <h1 className="text-2xl font-bold text-gray-800 text-center">Create Blog Post</h1>
 
         {user && user.email === adminEmail ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 mt-4">
             <input
               type="text"
-              placeholder="Post Title"
+              placeholder="What's happening?"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"
               required
             />
             <textarea
-              placeholder="Post Content"
+              placeholder="Tell your story..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"
               required
-              rows="5"
+              rows="4"
             />
+
+            <div className="flex flex-wrap items-center justify-between">
+              <select
+                value={genre}
+                onChange={(e) => setGenre(e.target.value)}
+                className="w-full md:w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                required
+              >
+                <option value="Casual">Casual</option>
+                <option value="Action">Action</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Drama">Drama</option>
+                <option value="Romance">Romance</option>
+                
+              </select>
+
+              <div className="flex space-x-4 mt-2 md:mt-0">
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    value="forEveryone"
+                    checked={publishOption === 'forEveryone'}
+                    onChange={(e) => setPublishOption(e.target.value)}
+                    className="hidden"
+                  />
+                  <span className={`px-3 py-2 rounded-lg text-sm font-semibold ${publishOption === 'forEveryone' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                    Public
+                  </span>
+                </label>
+
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    value="forMe"
+                    checked={publishOption === 'forMe'}
+                    onChange={(e) => setPublishOption(e.target.value)}
+                    className="hidden"
+                  />
+                  <span className={`px-3 py-2 rounded-lg text-sm font-semibold ${publishOption === 'forMe' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                    Private
+                  </span>
+                </label>
+              </div>
+            </div>
+
             <button
               type="submit"
-              className={`px-6 py-3 text-white rounded-lg transition ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"}`}
+              className={`w-full py-3 text-white font-semibold rounded-lg transition-all ${
+                loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
+              }`}
               disabled={loading}
             >
-              {loading ? "Posting..." : "Add Post"}
+              {loading ? "Posting..." : "Post"}
             </button>
           </form>
         ) : (
-          <p className="text-red-500">Only the admin can post blogs.</p>
+          <p className="text-red-500 text-center mt-4">Only the admin can post blogs.</p>
         )}
       </div>
     </div>
