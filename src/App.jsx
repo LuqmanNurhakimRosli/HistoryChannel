@@ -1,4 +1,4 @@
-import { Routes, Route, useOutletContext } from "react-router-dom";
+import { Routes, Route, useOutletContext, Navigate } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
@@ -15,7 +15,7 @@ import PrivateBlog from "./blog/PrivateBlog";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 
-import Dashboard from "./dashboard/Dashboard";
+import Analytics from "./dashboard/Analytics";
 import PostLayout from "./layouts/PostLayout"; 
 import FeedLayout from "./layouts/FeedLayout"
 import CreateBlog from "./blog/CreateBlog"; 
@@ -51,10 +51,12 @@ function App() {
           {/* Protected Route Inside MainLayout */}
           <Route element={<ProtectedRoute />}> 
             <Route path="dashboard" element={<PostLayout />}>
-              <Route index element={<Dashboard />} />
+              <Route index element={<Navigate to="profile" />} />
+              <Route path="profile" element={<Profile />} /> 
               <Route path="createblog" element={<CreateBlog />} />
                 <Route path="manage-blog" element={<ManageBlog />} />
                 <Route path="manage-blog/:id" element={<EditBlog />} />
+                <Route path="analytics" element={<Analytics />} />
             </Route>
             <Route path="profile" element={<Profile />} /> 
           </Route>

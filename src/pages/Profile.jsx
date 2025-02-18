@@ -56,9 +56,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded-lg mt-10"> {/* Added mt-10 for spacing */}
+    <div className="mx-auto max-w-4xl p-4 bg-gray-100 py-10"> {/* Adjusted padding and margin */}
       <div className="flex flex-col md:flex-row justify-center items-center space-x-0 md:space-x-6 mb-6">
-        {/* Default Profile Image */}
         <div className="w-32 h-32 mb-4 md:mb-0">
           <img
             src={profileDefault}
@@ -103,7 +102,6 @@ const Profile = () => {
       </button>
     </div>
   );
-  
 };
 
 export default Profile;

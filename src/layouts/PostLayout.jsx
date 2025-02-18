@@ -9,10 +9,19 @@ const PostLayout = () => {
             className={({ isActive }) => 
               isActive ? "active-link px-4 py-2 rounded-lg bg-blue-500 text-white" : 
                          "default-link px-4 py-2 rounded-lg hover:bg-gray-200"} 
-            to="."
+            to="profile"
             end
           >
-            Dashboard
+            Profile
+          </NavLink>
+          <NavLink 
+            className={({ isActive }) => 
+              isActive ? "active-link px-4 py-2 rounded-lg bg-blue-500 text-white" : 
+                         "default-link px-4 py-2 rounded-lg hover:bg-gray-200"} 
+            to="analytics"
+            end
+          >
+            Analytics
           </NavLink>
           <NavLink 
             className={({ isActive }) => 
@@ -31,7 +40,9 @@ const PostLayout = () => {
             Manage Blog
           </NavLink>
         </nav>
-        <Outlet />
+        <div className="bg-gray-100">
+        <Outlet/>
+        </div>
       </div>
     </div>
   );

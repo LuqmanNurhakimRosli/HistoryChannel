@@ -37,7 +37,7 @@ const CreateBlog = () => {
         email: user.email,
         authorId: user.uid,
         createdAt: serverTimestamp(),
-        isPublic: publishOption === "forEveryone" ? true : false,
+        isPublic: publishOption === "forEveryone" ? true : "forMe",
       });
 
       await updateAuthorId(docRef.id, user.uid);
