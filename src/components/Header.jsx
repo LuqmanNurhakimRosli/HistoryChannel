@@ -57,50 +57,50 @@ function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <>
-            <div className="text-light-100 fixed inset-0 bg-black opacity-50 md:hidden" onClick={() => setIsMenuOpen(false)}></div>
-            
-            <div className="fixed top-0 right-0 w-3/4 h-full bg-gray-900 text-white p-6 transform transition-transform duration-300">
-              <button
-                className="absolute top-5 right-5 text-white text-2xl"
-                onClick={() => setIsMenuOpen(false)}
-                aria-label="Close Menu"
-              >
-                ✖
-              </button>
+  <>
+    <div className="text-light-100 fixed inset-0 bg-black opacity-50 md:hidden" onClick={() => setIsMenuOpen(false)}></div>
+    
+    <div className="text-center justify-center items-center fixed top-0 right-0 w-1/6 h-full bg-gray-900 text-white p-6 transform transition-transform duration-300 z-50">
+      <button
+        className="absolute top-5 right-5 text-white text-2xl"
+        onClick={() => setIsMenuOpen(false)}
+        aria-label="Close Menu"
+      >
+        ✖
+      </button>
 
-              <ul className="flex flex-col space-y-4 mt-8">
-                <NavItem to="/" icon={<Home size={22} />} tooltip="Home" closeMenu={() => setIsMenuOpen(false)} />
-                <NavItem to="/blog" icon={<FileText size={22} />} tooltip="Blog" closeMenu={() => setIsMenuOpen(false)} />
-                {user && (
-                  <>
-                    <NavItem to="/dashboard" icon={<User size={22} />} tooltip="Dashboard" closeMenu={() => setIsMenuOpen(false)} />
-                    <NavItem to="/dashboard/createblog" icon={<PenLine size={22} />} tooltip="New Post" closeMenu={() => setIsMenuOpen(false)} />
-                  </>
-                )}
-                {!user ? (
-                  <>
-                    <NavItem to="/login" icon={<LogIn size={22} />} tooltip="Login" closeMenu={() => setIsMenuOpen(false)} />
-                    <NavItem to="/register" icon={<UserPlus size={22} />} tooltip="Register" closeMenu={() => setIsMenuOpen(false)} />
-                  </>
-                ) : (
-                  <li>
-                    <button
-                      onClick={() => {
-                        logout();
-                        setIsMenuOpen(false);
-                      }}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md transition-colors duration-200 flex items-center space-x-2"
-                    >
-                      <LogOut size={22} />
-                      <span>Logout</span>
-                    </button>
-                  </li>
-                )}
-              </ul>
-            </div>
+      <ul className="flex flex-col space-y-4 mt-8 text-white">
+        <NavItem to="/" icon={<Home size={22} />} tooltip="Home" closeMenu={() => setIsMenuOpen(false)} />
+        <NavItem to="/blog" icon={<FileText size={22} />} tooltip="Blog" closeMenu={() => setIsMenuOpen(false)} />
+        {user && (
+          <>
+            <NavItem to="/dashboard" icon={<User size={22} />} tooltip="Dashboard" closeMenu={() => setIsMenuOpen(false)} />
+            <NavItem to="/dashboard/createblog" icon={<PenLine size={22} />} tooltip="New Post" closeMenu={() => setIsMenuOpen(false)} />
           </>
         )}
+        {!user ? (
+          <>
+            <NavItem to="/login" icon={<LogIn size={22} />} tooltip="Login" closeMenu={() => setIsMenuOpen(false)} />
+            <NavItem to="/register" icon={<UserPlus size={22} />} tooltip="Register" closeMenu={() => setIsMenuOpen(false)} />
+          </>
+        ) : (
+          <li>
+            <button
+              onClick={() => {
+                logout();
+                setIsMenuOpen(false);
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md transition-colors duration-200 flex items-center space-x-2"
+            >
+              <LogOut size={22} />
+              <span>Logout</span>
+            </button>
+          </li>
+        )}
+      </ul>
+    </div>
+  </>
+)}
       </nav>
     </header>
   );

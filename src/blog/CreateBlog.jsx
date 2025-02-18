@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { db } from '../firebaseConfig'; 
-import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+import { collection, addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -10,15 +10,14 @@ const CreateBlog = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [genre, setGenre] = useState('');
-  const [publishOption, setPublishOption] = useState('forEveryone'); 
+  const [publishOption, setPublishOption] = useState('forEveryone');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!title.trim() || !content.trim() || !genre.trim() )
-    {
+    if (!title.trim() || !content.trim() || !genre.trim()) {
       toast.error("Please fill all the fields.");
       return;
     }
@@ -38,6 +37,7 @@ const CreateBlog = () => {
         email: user.email,
         authorId: user.uid,
         createdAt: serverTimestamp(),
+        isPublic: publishOption === "forEveryone" ? true : false,
       });
 
       await updateAuthorId(docRef.id, user.uid);
@@ -45,8 +45,8 @@ const CreateBlog = () => {
       setTitle('');
       setContent('');
       setGenre('');
+      setPublishOption('forEveryone');
 
-      // Navigate based on publish option
       if (publishOption === 'forEveryone') {
         navigate('/blog');
       } else {
@@ -66,37 +66,36 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-md p-6">
-        <h1 className="text-2xl font-bold text-gray-800 text-center">Create Blog Post</h1>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6">
+        <h1 className="text-2xl font-bold text-gray-900 mb-4 text-center">Create Blog Post</h1>
 
         {user ? (
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
             <input
               type="text"
-              placeholder="What's happening?"
+              placeholder="Blog Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"
+              className="w-full p-3 border border-gray-300 rounded-lg text-lg font-semibold focus:ring-2 focus:ring-blue-400 focus:outline-none"
               required
             />
             <textarea
-              placeholder="Tell your story..."
+              placeholder="Write your blog content here..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="w-full p-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"
+              className="w-full p-3 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
               required
               rows="8"
             />
 
-            <div className="flex flex-wrap items-center justify-between">
-              <select
-                value={genre}
-                onChange={(e) => setGenre(e.target.value)}
-                className="w-full md:w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"
-                required
-              >
-                <option value="" disabled selected>Select Genre</option>
+            <select
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg text-lg font-semibold focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              required
+            >
+              <option value="" disabled selected>Select Genre</option>
               <option value="Action">Action</option>
               <option value="Comedy">Comedy</option>
               <option value="Casual">Casual</option>
@@ -104,33 +103,32 @@ const CreateBlog = () => {
             </select>
 
             <div className="flex space-x-4 mt-2 md:mt-0 items-center">
-                <label>Publish:</label>
-                <label className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                        type="radio"
-                        value="forEveryone"
-                        checked={publishOption === 'forEveryone'}
-                        onChange={(e) => setPublishOption(e.target.value)}
-            className="hidden"
-        />
-        <span className={`px-3 py-2 rounded-lg text-sm font-semibold ${publishOption === 'forEveryone' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
-            Public
-        </span>
-    </label>
+              <label>Publish:</label>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  value="forEveryone"
+                  checked={publishOption === 'forEveryone'}
+                  onChange={(e) => setPublishOption(e.target.value)}
+                  className="hidden"
+                />
+                <span className={`px-3 py-2 rounded-lg text-sm font-semibold ${publishOption === 'forEveryone' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                  Public
+                </span>
+              </label>
 
-    <label className="flex items-center space-x-2 cursor-pointer">
-        <input
-            type="radio"
-            value="forMe"
-            checked={publishOption === 'forMe'}
-            onChange={(e) => setPublishOption(e.target.value)}
-            className="hidden"
-        />
-        <span className={`px-3 py-2 rounded-lg text-sm font-semibold ${publishOption === 'forMe' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
-            Private
-        </span>
-    </label>
-</div>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  value="forMe"
+                  checked={publishOption === 'forMe'}
+                  onChange={(e) => setPublishOption(e.target.value)}
+                  className="hidden"
+                />
+                <span className={`px-3 py-2 rounded-lg text-sm font-semibold ${publishOption === 'forMe' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                  Private
+                </span>
+              </label>
             </div>
 
             <button

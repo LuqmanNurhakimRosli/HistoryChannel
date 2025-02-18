@@ -24,17 +24,16 @@ const ManageBlog = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">Manage Your Blog Posts</h1>
-      <ul>
+      <ul className="flex flex-wrap justify-center">
         {userBlogs.map(blog => (
-          <li key={blog.id} className="p-4 bg-white shadow-md rounded-lg mb-4">
-            <h2 className="text-xl font-semibold">{blog.title}</h2>
-            <p className="text-gray-600">{blog.content.slice(0, 100)}...</p>
-            <button
-              className="text-blue-500 mt-4"
-              onClick={() => navigate(`${blog.id}`)}
+          <li key={blog.id} className="w-1/2 p-4 mb-4">
+            <div
+              className="bg-white shadow-md rounded-lg p-4 cursor-pointer h-full"
+              onClick={() => navigate(`${blog.id}`)} // Navigate on box click
             >
-              Edit / Delete
-            </button>
+              <h2 className="text-xl font-semibold">{blog.title}</h2>
+              <p className="text-gray-600">{blog.content.slice(0, 100)}...</p>
+            </div>
           </li>
         ))}
       </ul>
