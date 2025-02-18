@@ -49,7 +49,7 @@ function PrivateBlog() {
   );
 
   return (
-    <section className="w-full py-8 ">
+    <section className="w-full py-8 text-center from-blue-300 to-blue-800">
       <div className="container mx-auto px-4">
         {user ? (
           <>

@@ -2,7 +2,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 
 function FeedLayout() {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen mx-auto container px-4 py-8 bg-gradient-to-br from-blue-300 to-blue-800">
       <h1 className="text-5xl font-extrabold text-center text-gray-900 mb-8">
         Latest Blog Posts
       </h1>
@@ -32,7 +32,7 @@ function FeedLayout() {
         </NavLink>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-2">
         <Outlet />
       </div>
     </div>

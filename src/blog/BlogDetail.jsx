@@ -53,14 +53,14 @@ const BlogDetail = () => {
     : "Unknown";
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8 bg-white shadow-lg rounded-lg flex-grow">
+    <div className="max-w-6xl mx-auto px-6 py-8 bg-white shadow-lg rounded-lg flex-grow">
       {/* Updated Back button to link to /blog */}
       <Link to="/blog" className="inline-block text-blue-600 hover:text-blue-800 mb-6 font-semibold text-left">
         &larr; Back to Blog
       </Link>
       <article className="prose lg:prose-xl space-y-6">
         <h1 className="text-3xl font-bold text-gray-900">{blog.title}</h1>
-        <div className="flex justify-center items-center text-gray-600 space-x-4">
+        <div className=" text-gray-600 space-x-4">
           <strong className="text-lg">{blog.author}</strong>
           <span className="text-sm">|</span>
           <strong className="text-sm text-gray-500">{formattedDate}</strong> {/* Display the formatted date */}

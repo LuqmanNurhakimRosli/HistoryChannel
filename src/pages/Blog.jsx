@@ -23,11 +23,10 @@ function Blog() {
     }
   };
 
-
   const publicPosts = blog.filter((post) => post.publishOption === true);
 
   return (
-    <section className="w-full py-8">
+    <section className="w-full  py-8">
       <div className="container mx-auto px-4">
         {loading ? (
           <div className="flex justify-center items-center h-40">

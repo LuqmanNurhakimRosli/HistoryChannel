@@ -19,7 +19,7 @@ function Home() {
           Start your journey by <span className="font-semibold text-blue-800">writing</span> or discovering amazing blogs from others! 🌍
         </p>
 
-        <div className="mt-6 flex flex-col md:flex-row gap-4 justify-center">
+        <div className="flex flex-col md:flex-row gap-4 justify-center">
           <a
             href="/blog"
             className="px-8 py-4 text-xl font-semibold text-white bg-blue-600 hover:bg-blue-800 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 animate-bounce"
