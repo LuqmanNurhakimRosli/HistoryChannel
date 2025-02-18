@@ -42,7 +42,7 @@ function Header() {
           {user && (
             <>
               <NavItem to="/dashboard" icon={<User size={22} />} tooltip="Dashboard" />
-              <NavItem to="/dashboard/createblog" icon={<PenLine size={22} />} tooltip="New Post" />
+              <NavItem to="/createblog" icon={<PenLine size={22} />} tooltip="New Post" />
             </>
           )}
           {!user ? (

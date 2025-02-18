@@ -5,12 +5,13 @@ import { ToastContainer } from "react-toastify";
 
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
-import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 
 import BlogDetail from "./blog/BlogDetail";
-import PrivateBlog from "./blog/PrivateBlog";
+
+import Blog from "./feed/Blog";
+import PrivateBlog from "./feed/PrivateBlog";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -53,11 +54,11 @@ function App() {
             <Route path="dashboard" element={<PostLayout />}>
               <Route index element={<Navigate to="profile" />} />
               <Route path="profile" element={<Profile />} /> 
-              <Route path="createblog" element={<CreateBlog />} />
                 <Route path="manage-blog" element={<ManageBlog />} />
                 <Route path="manage-blog/:id" element={<EditBlog />} />
                 <Route path="analytics" element={<Analytics />} />
             </Route>
+            <Route path="createblog" element={<CreateBlog />} />
             <Route path="profile" element={<Profile />} /> 
           </Route>
 
