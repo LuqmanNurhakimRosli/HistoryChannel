@@ -5,14 +5,17 @@ import CommentForm from "../comment/CommentForm";
 import { useAuth } from "../context/AuthContext";
 import { getCommentsByPostId } from "../api/commentApi";
 import blogApi from "../api/blogApi"; 
-import { formatDistanceToNow } from "date-fns"; // Import only formatDistanceToNow
+import { formatDistanceToNow } from "date-fns";
 
 const BlogDetail = () => {
-  const { id: blogId } = useParams(); // Retrieve blogId from URL params
+  const { id: blogId } = useParams();
   const { user } = useAuth();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
-
+  const [translatedTitle, setTranslatedTitle] = useState(null);
+  const [translatedContent, setTranslatedContent] = useState(null);
+  const [isTranslated, setIsTranslated] = useState(false);
+  
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -28,7 +31,6 @@ const BlogDetail = () => {
   useEffect(() => {
     const fetchComments = async () => {
       const commentsData = await getCommentsByPostId(blogId);
-      console.log("Fetched comments:", commentsData); // Debugging
       setComments(commentsData);
     };
     fetchComments();
@@ -41,33 +43,96 @@ const BlogDetail = () => {
 
   if (!blog) return <div className="flex justify-center items-center h-screen text-xl">Loading...</div>;
 
-  // Parse the date string to get a valid Date object
   const parseDate = (dateString) => {
     const date = new Date(dateString); 
     return isNaN(date) ? null : date;
   };
 
-  // Format the date to show how long ago the blog was created
   const formattedDate = blog.createdAt
     ? formatDistanceToNow(parseDate(blog.createdAt), { addSuffix: true }) 
     : "Unknown";
 
+  // Translate Function using LibreTranslate
+  const translateText = async () => {
+    if (isTranslated) {
+      setIsTranslated(false);
+      return;
+    }
+  
+    try {
+      const apiUrl = "https://libretranslate.com/translate"; // Ensure this API is working
+  
+      // Translate the title
+      const titleResponse = await fetch(apiUrl, {
+        method: "POST",
+        body: JSON.stringify({
+          q: blog.title,
+          source: "auto",
+          target: "ms",
+          format: "text",
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      // Translate the content
+      const contentResponse = await fetch(apiUrl, {
+        method: "POST",
+        body: JSON.stringify({
+          q: blog.content,
+          source: "auto",
+          target: "ms",
+          format: "text",
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      // Convert responses to JSON
+      const titleData = await titleResponse.json();
+      const contentData = await contentResponse.json();
+  
+      console.log("Title Response:", titleData);
+      console.log("Content Response:", contentData);
+  
+      // Handle missing translatedText
+      if (titleData.translatedText && contentData.translatedText) {
+        setTranslatedTitle(titleData.translatedText);
+        setTranslatedContent(contentData.translatedText);
+        setIsTranslated(true);
+      } else {
+        console.error("Translation failed: Missing translatedText", titleData, contentData);
+      }
+    } catch (error) {
+      console.error("Translation error:", error);
+    }
+  };
+  
   return (
     <div className="max-w-6xl mx-auto px-6 py-8 bg-white shadow-lg rounded-lg flex-grow">
-      {/* Updated Back button to link to /blog */}
       <Link to="/blog" className="inline-block text-blue-600 hover:text-blue-800 mb-6 font-semibold text-left">
         &larr; Back to Blog
       </Link>
       <article className="prose lg:prose-xl space-y-6">
-        <h1 className="text-3xl font-bold text-gray-900">{blog.title}</h1>
-        <div className=" text-gray-600 space-x-4">
+        <h1 className="text-3xl font-bold text-gray-900">
+          {isTranslated ? translatedTitle || blog.title : blog.title}
+        </h1>
+        <div className="text-gray-600 space-x-4">
           <strong className="text-lg">{blog.author}</strong>
           <span className="text-sm">|</span>
-          <strong className="text-sm text-gray-500">{formattedDate}</strong> {/* Display the formatted date */}
+          <strong className="text-sm text-gray-500">{formattedDate}</strong>
           <span className="text-sm">|</span>
           <strong className="text-sm text-gray-500">{blog.genre}</strong>
         </div>
-        <p className="text-gray-800 leading-relaxed text-lg">{blog.content}</p>
+        <p className="text-gray-800 leading-relaxed text-lg">
+          {isTranslated ? translatedContent || blog.content : blog.content}
+        </p>
+
+        {/* Translate Button */}
+        <button
+          onClick={translateText}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+        >
+          {isTranslated ? "Show Original" : "Translate"}
+        </button>
       </article>
 
       <section className="mt-12 border-t pt-6">
@@ -75,12 +140,7 @@ const BlogDetail = () => {
         {comments.length > 0 ? (
           <div className="space-y-6">
             {comments.map((comment) => (
-              <Comment 
-                key={comment.id} 
-                comment={comment} 
-                refreshComments={refreshComments} 
-                className="bg-gray-50 p-4 rounded-md shadow-sm"
-              />
+              <Comment key={comment.id} comment={comment} refreshComments={refreshComments} />
             ))}
           </div>
         ) : (
@@ -89,11 +149,7 @@ const BlogDetail = () => {
 
         <div className="mt-6">
           {user ? (
-            <CommentForm 
-              postId={blogId} 
-              refreshComments={refreshComments} 
-              className="bg-gray-100 p-4 rounded-lg shadow-sm"
-            />
+            <CommentForm postId={blogId} refreshComments={refreshComments} />
           ) : (
             <p className="text-gray-600 bg-yellow-50 p-3 rounded-md">
               You must be logged in to add a comment.
