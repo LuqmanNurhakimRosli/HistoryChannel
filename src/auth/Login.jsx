@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
-  signInWithRedirect,
+  signInWithPopup,
   getRedirectResult,
   GoogleAuthProvider,
 } from "firebase/auth";
@@ -18,7 +18,6 @@ function Login() {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
-  // Handle redirect result for Google login
   useEffect(() => {
     getRedirectResult(auth)
       .then((result) => {
@@ -33,7 +32,6 @@ function Login() {
       });
   }, [navigate]);
 
-  // Handle email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -48,10 +46,11 @@ function Login() {
     }
   };
 
-  // Handle Google login with redirect
   const handleGoogleLogin = async () => {
     try {
-      await signInWithRedirect(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
+      toast.success("Logged in with Google!");
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
       toast.error("Google login failed!");
@@ -99,8 +98,7 @@ function Login() {
           </button>
         </div>
 
-        <p className="mt-4 text-gray-600">
-          Do not have an account?{" "}
+        <p className="mt-4 text-gray-600"> Do not have an account?{" "}
           <Link to="/register" className="text-blue-500 font-medium">
             Register here
           </Link>

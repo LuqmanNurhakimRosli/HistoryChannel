@@ -4,6 +4,7 @@ import { db } from '../firebaseConfig';
 import { collection, addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import wallpaper from '../assets/post-wallpaper.jpg'
 
 const CreateBlog = () => {
   const { user } = useAuth();
@@ -66,7 +67,7 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${wallpaper})` }}>
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-4 text-center">Create Blog Post</h1>
 
