@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../firebaseConfig';
-import { collection, addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp,} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import wallpaper from '../assets/post-wallpaper.jpg'
@@ -30,7 +30,7 @@ const CreateBlog = () => {
 
     setLoading(true);
     try {
-      const docRef = await addDoc(collection(db, "blog"), {
+       await addDoc(collection(db, "blog"), {
         title,
         content,
         genre,
@@ -41,7 +41,6 @@ const CreateBlog = () => {
         publishOption,
       });
 
-      await updateAuthorId(docRef.id, user.uid);
       toast.success("Post created successfully!");
       setTitle('');
       setContent('');
@@ -61,10 +60,7 @@ const CreateBlog = () => {
     }
   };
 
-  const updateAuthorId = async (blogId, newAuthorId) => {
-    const blogRef = doc(db, "blog", blogId);
-    await updateDoc(blogRef, { authorId: newAuthorId });
-  };
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${wallpaper})` }}>

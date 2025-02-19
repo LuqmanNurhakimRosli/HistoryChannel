@@ -11,7 +11,7 @@ function PrivateBlog() {
 
   useEffect(() => {
     if (user) {
-      const filteredPosts = posts.filter(post => post.authorId === user.uid && post.publishOption === false);
+      const filteredPosts = posts.filter(post => post.authorId === user.uid && post.publishOption === false || post.publishOption === "onlyMe");
       setPrivatePosts(filteredPosts);
     }
   }, [user, posts]);

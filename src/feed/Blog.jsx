@@ -23,7 +23,7 @@ function Blog() {
     }
   };
 
-  const publicPosts = blog.filter((post) => post.publishOption === true);
+  const publicPosts = blog.filter((post) => post.publishOption === true || post.publishOption === "forEveryone");
 
   return (
     <section className="w-full  py-8">
