@@ -2,7 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { deleteComment } from "../api/commentApi";
 import PropTypes from "prop-types";
 import { formatDistanceToNow } from "date-fns";
-import profileDefault from "../assets/default-profile.png";
+import profileDefault from "../assets/default-profile.jfif";
 
 const Comment = ({ comment, refreshComments, className = "" }) => {
   const { user } = useAuth();

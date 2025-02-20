@@ -73,7 +73,7 @@ const CommentForm = ({ postId, refreshComments, className = "" }) => {
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Write a comment..."
         required
-        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y min-h-[100px]"
+        className="text-black w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y min-h-[100px]"
       />
       <button 
         type="submit" 

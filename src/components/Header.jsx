@@ -1,41 +1,22 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useState, useEffect } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 import PropTypes from "prop-types";
-import { Home, FileText, User, LogOut, LogIn, UserPlus, PenLine } from "lucide-react"; // Icons
+import { Home, FileText, User, LogOut, LogIn, UserPlus, PenLine } from "lucide-react";
 
 function Header() {
   const { user, logout } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isMenuOpen]);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <header className="bg-gray-800 text-white shadow-md sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
-        
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
           <h1 className="text-2xl font-bold">OwlScribe</h1>
         </Link>
 
-        {/* Hamburger Menu for Mobile */}
-        <button className="md:hidden" onClick={toggleMenu} aria-label="Toggle Menu">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-          </svg>
-        </button>
-
-        {/* Navigation Links (Desktop) */}
+        {/* Desktop Navigation */}
         <ul className="hidden md:flex space-x-6">
           <NavItem to="/" icon={<Home size={22} />} tooltip="Home" />
           <NavItem to="/blog" icon={<FileText size={22} />} tooltip="Blog" />
@@ -65,64 +46,51 @@ function Header() {
         </ul>
 
         {/* Mobile Menu */}
-        <div
-          className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${
-            isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
-          } md:hidden`}
-          onClick={closeMenu}
-        ></div>
-
-        <div
-          className={`fixed top-0 right-0 w-2/3 max-w-xs h-full bg-gray-900 text-white p-6 shadow-lg transform transition-transform duration-300 ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
-          } md:hidden`}
-          aria-hidden={!isMenuOpen}
-        >
-          {/* Close Button */}
-          <button
-            className="absolute top-5 right-5 text-white text-2xl"
-            onClick={closeMenu}
-            aria-label="Close Menu"
+        <Menu as="div" className="md:hidden relative">
+          <Menu.Button className="text-white text-2xl focus:outline-none">☰</Menu.Button>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
           >
-            ✖
-          </button>
-
-          <ul className="flex flex-col space-y-4 mt-8 text-white">
-            <NavItem to="/" icon={<Home size={22} />} tooltip="Home" closeMenu={closeMenu} />
-            <NavItem to="/blog" icon={<FileText size={22} />} tooltip="Blog" closeMenu={closeMenu} />
-            {user && (
-              <>
-                <NavItem to="/dashboard" icon={<User size={22} />} tooltip="Dashboard" closeMenu={closeMenu} />
-                <NavItem to="/dashboard/createblog" icon={<PenLine size={22} />} tooltip="New Post" closeMenu={closeMenu} />
-              </>
-            )}
-            {!user ? (
-              <>
-                <NavItem to="/login" icon={<LogIn size={22} />} tooltip="Login" closeMenu={closeMenu} />
-                <NavItem to="/register" icon={<UserPlus size={22} />} tooltip="Register" closeMenu={closeMenu} />
-              </>
-            ) : (
-              <li>
-                <button
-                  onClick={() => {
-                    logout();
-                    closeMenu();
-                  }}
-                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md transition-colors duration-200 flex items-center space-x-2"
-                >
-                  <LogOut size={22} />
-                  <span>Logout</span>
-                </button>
-              </li>
-            )}
-          </ul>
-        </div>
+            <Menu.Items className="absolute right-0 mt-3 w-48 bg-gray-900 text-white shadow-lg rounded-md z-50">
+              <div className="flex flex-col py-2">
+                <MenuItem to="/" icon={<Home size={22} />} label="Home" />
+                <MenuItem to="/blog" icon={<FileText size={22} />} label="Blog" />
+                {user && (
+                  <>
+                    <MenuItem to="/dashboard" icon={<User size={22} />} label="Dashboard" />
+                    <MenuItem to="/createblog" icon={<PenLine size={22} />} label="New Post" />
+                  </>
+                )}
+                {!user ? (
+                  <>
+                    <MenuItem to="/login" icon={<LogIn size={22} />} label="Login" />
+                    <MenuItem to="/register" icon={<UserPlus size={22} />} label="Register" />
+                  </>
+                ) : (
+                  <button
+                    onClick={logout}
+                    className="flex items-center space-x-2 px-4 py-2 hover:bg-gray-700"
+                  >
+                    <LogOut size={22} />
+                    <span>Logout</span>
+                  </button>
+                )}
+              </div>
+            </Menu.Items>
+          </Transition>
+        </Menu>
       </nav>
     </header>
   );
 }
 
-function NavItem({ to, icon, tooltip, closeMenu }) {
+function NavItem({ to, icon, tooltip }) {
   return (
     <li>
       <NavLink
@@ -130,7 +98,6 @@ function NavItem({ to, icon, tooltip, closeMenu }) {
         className={({ isActive }) =>
           `${isActive ? "text-blue-400 font-semibold" : "text-gray-300 hover:text-white"} transition-colors duration-200 flex items-center space-x-2`
         }
-        onClick={closeMenu ? () => closeMenu() : undefined}
         aria-label={tooltip}
       >
         {icon}
@@ -140,11 +107,32 @@ function NavItem({ to, icon, tooltip, closeMenu }) {
   );
 }
 
+function MenuItem({ to, icon, label }) {
+  return (
+    <Menu.Item>
+      {({ active }) => (
+        <Link
+          to={to}
+          className={`flex items-center space-x-2 px-4 py-2 ${active ? "bg-gray-700" : ""}`}
+        >
+          {icon}
+          <span>{label}</span>
+        </Link>
+      )}
+    </Menu.Item>
+  );
+}
+
 NavItem.propTypes = {
   to: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,
   tooltip: PropTypes.string.isRequired,
-  closeMenu: PropTypes.func,
+};
+
+MenuItem.propTypes = {
+  to: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default Header;
