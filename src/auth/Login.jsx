@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
-  signInWithRedirect,
+  // signInWithRedirect,
   getRedirectResult,
   GoogleAuthProvider,
   setPersistence,
-  browserLocalPersistence,
+  browserSessionPersistence,
   onAuthStateChanged,
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const googleProvider = new GoogleAuthProvider();
+  // const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
     // Listen for authentication state changes
@@ -51,7 +51,7 @@ function Login() {
     setError("");
 
     try {
-      await setPersistence(auth, browserLocalPersistence);
+      await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Login Successful! Redirecting...");
       navigate("/dashboard");
@@ -64,16 +64,14 @@ function Login() {
 
   const handleGoogleLogin = async () => {
     try {
-      await setPersistence(auth, browserLocalPersistence);
-
-      // Check screen width instead of relying on 'isMobile'
-      if (window.innerWidth < 768) { // Mobile screens
-        await signInWithRedirect(auth, googleProvider);
-      } else {
-        const result = await signInWithPopup(auth, googleProvider);
-        toast.success(`Welcome, ${result.user.displayName || "User"}!`);
-        navigate("/dashboard");
-      }
+      const googleProvider = new GoogleAuthProvider();
+      
+      // Use signInWithPopup instead of redirect
+      const result = await signInWithPopup(auth, googleProvider);
+      
+      console.log("Google Login Success:", result.user);
+      toast.success(`Welcome, ${result.user.displayName || "User"}!`);
+      navigate("/dashboard");
     } catch (err) {
       console.error("Google Login Error:", err);
       toast.error("Google login failed!");
