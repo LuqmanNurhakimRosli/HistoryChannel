@@ -69,7 +69,7 @@ function Login() {
   const handleGoogleLogin = async () => {
     try {
       await setPersistence(auth, browserLocalPersistence);
-
+  
       if (isMobile) {
         console.log("Redirecting to Google Sign-in for mobile...");
         await signInWithRedirect(auth, googleProvider);
@@ -84,6 +84,7 @@ function Login() {
       toast.error("Google login failed!");
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900">
