@@ -113,8 +113,8 @@ const BlogDetail = () => {
         <p className="text-gray-800 leading-relaxed text-base sm:text-lg">
           {isTranslated ? translatedContent || blog.content : blog.content}
         </p>
-        <div className="flex items-center gap-4 mt-4">
-          <span>👁 Views: {blog.views}</span>
+        <div className="flex items-center gap-4 mt-4 ">
+          <span className="text-black">👁 Views: {blog.views}</span>
           <button
             onClick={handleLike}
             disabled={liked}

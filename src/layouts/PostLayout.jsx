@@ -2,7 +2,7 @@ import { Outlet, NavLink } from "react-router-dom";
 
 const PostLayout = () => {
   return (
-    <div className="bg-gradient-to-br from-blue-300 to-blue-800 flex flex-col ">
+    <div className="bg-gradient-to-b from-gray-700 to-gray-900  flex flex-col ">
       <div className="flex-grow w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mx-auto my-8">
         <nav className="flex space-x-4 border-b-2 pb-2 mb-4 justify-center">
           <NavLink 
