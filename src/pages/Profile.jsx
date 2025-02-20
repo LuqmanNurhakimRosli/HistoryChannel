@@ -70,9 +70,8 @@ const Profile = () => {
 
         {/* User Info */}
         <div className="flex-1">
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 break-all">{user?.displayName}</h2>
-          <p className="text-lg text-gray-700 break-all">{user?.email}</p>
-        </div>
+        <h2 className="text-xl sm:text-lg md:text-2xl font-semibold text-gray-900 break-all">{user?.displayName}</h2>
+        <p className="text-sm sm:text-xs md:text-lg text-gray-700 break-all">{user?.email}</p></div>
         </div>
         
       </div>

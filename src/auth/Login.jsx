@@ -65,10 +65,8 @@ function Login() {
   const handleGoogleLogin = async () => {
     try {
       const googleProvider = new GoogleAuthProvider();
-      
-      // Use signInWithPopup instead of redirect
+      await setPersistence(auth, browserSessionPersistence);
       const result = await signInWithPopup(auth, googleProvider);
-      
       console.log("Google Login Success:", result.user);
       toast.success(`Welcome, ${result.user.displayName || "User"}!`);
       navigate("/dashboard");
