@@ -84,7 +84,6 @@ function Login() {
       toast.error("Google login failed!");
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900">
