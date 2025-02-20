@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
+  signInWithPopup,
   getRedirectResult,
   GoogleAuthProvider,
   signInWithRedirect,
@@ -8,6 +9,7 @@ import {
   browserLocalPersistence,
   onAuthStateChanged,
 } from "firebase/auth";
+import { isMobile } from "react-device-detect";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -71,13 +73,21 @@ function Login() {
   const handleGoogleLogin = async () => {
     try {
       await setPersistence(auth, browserLocalPersistence);
-      await signInWithRedirect(auth, googleProvider); // Always use redirect method
+
+      if (isMobile) {
+        const finish = await signInWithRedirect(auth, googleProvider);
+        toast.success(`Welcome, ${finish.user.displayName}!`);
+        navigate("/dashboard");
+      } else {
+        const result = await signInWithPopup(auth, googleProvider);
+        toast.success(`Welcome, ${result.user.displayName}!`);
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.error("Google Login Error:", err);
       toast.error("Google login failed!");
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900">
