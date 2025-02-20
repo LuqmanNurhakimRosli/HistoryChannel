@@ -4,7 +4,9 @@ import {
   signInWithPopup,
   getRedirectResult,
   GoogleAuthProvider,
+  signInWithRedirect,
 } from "firebase/auth";
+import {isMobile} from 'react-device-detect';
 import { auth } from "../firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -46,16 +48,20 @@ function Login() {
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin= async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      if (isMobile) {
+        await signInWithRedirect (auth, googleProvider)
+      } else {
+        await signInWithPopup(auth, googleProvider);
+      }
       toast.success("Logged in with Google!");
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
       toast.error("Google login failed!");
     }
-  };
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
