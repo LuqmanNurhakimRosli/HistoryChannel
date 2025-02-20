@@ -15,14 +15,23 @@ const BlogDetail = () => {
   const [translatedTitle, setTranslatedTitle] = useState(null);
   const [translatedContent, setTranslatedContent] = useState(null);
   const [isTranslated, setIsTranslated] = useState(false);
-  
+  const [liked, setLiked] = useState(false);
+
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         const fetchedBlog = await blogApi.getPostById(blogId);
         setBlog(fetchedBlog);
+
+        // Track views per session
+        const viewedPosts = JSON.parse(localStorage.getItem("viewedPosts")) || [];
+        if (!viewedPosts.includes(blogId)) {
+          await blogApi.incrementViews(blogId);
+          fetchedBlog.views += 1;
+          localStorage.setItem("viewedPosts", JSON.stringify([...viewedPosts, blogId]));
+        }
       } catch (error) {
-        console.error("Error fetching blog post: ", error);
+        console.error("Error fetching blog post:", error);
       }
     };
     fetchBlog();
@@ -41,18 +50,20 @@ const BlogDetail = () => {
     setComments(commentsData);
   };
 
-  if (!blog) return <div className="flex justify-center items-center h-screen text-xl">Loading...</div>;
-
-  const parseDate = (dateString) => {
-    const date = new Date(dateString); 
-    return isNaN(date) ? null : date;
+  const handleLike = async () => {
+    if (!liked) {
+      await blogApi.incrementLikes(blogId);
+      setBlog((prev) => ({ ...prev, likes: prev.likes + 1 }));
+      setLiked(true);
+    }
   };
 
+  if (!blog) return <div className="flex justify-center items-center h-screen text-xl">Loading...</div>;
+
   const formattedDate = blog.createdAt
-    ? formatDistanceToNow(parseDate(blog.createdAt), { addSuffix: true }) 
+    ? formatDistanceToNow(new Date(blog.createdAt), { addSuffix: true }) 
     : "Unknown";
 
-  // Translate Function using LibreTranslate
   const translateText = async () => {
     if (isTranslated) {
       setIsTranslated(false);
@@ -60,8 +71,8 @@ const BlogDetail = () => {
     }
   
     try {
-      const apiUrl = "https://libretranslate.com/translate"; // Ensure this API is working
-  
+      const apiUrl = "https://libretranslate.com/translate"; 
+
       const translate = async (text) => {
         const response = await fetch(apiUrl, {
           method: "POST",
@@ -111,11 +122,23 @@ const BlogDetail = () => {
           {isTranslated ? translatedContent || blog.content : blog.content}
         </p>
 
+        {/* Like & View Counter */}
+        <div className="flex items-center gap-4 mt-4">
+          <span>👁 Views: {blog.views}</span>
+          <button
+            onClick={handleLike}
+            disabled={liked}
+            className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+          >
+            ❤️ Like {blog.likes}
+          </button>
+        </div>
+
         {/* Translate Button */}
         <div className="flex justify-center sm:justify-start">
           <button
             onClick={translateText}
-            className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+            className="hidden mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
           >
             {isTranslated ? "Show Original" : "Translate"}
           </button>
