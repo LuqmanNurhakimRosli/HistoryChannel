@@ -3,6 +3,7 @@ import { auth } from "../firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import PropTypes from "prop-types";
 
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {

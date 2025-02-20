@@ -6,7 +6,7 @@ function Home() {
       id="home"
       className="w-full h-screen bg-gradient-to-br from-blue-500 to-blue-900 flex items-center justify-center text-center overflow-hidden"
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto pt-3 pb-12 px-6 md:px-12 lg:px-24">
         <h1 className="text-6xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-lg tracking-wide animate-fadeIn">
           Welcome to <span className="text-yellow-400">OwlScribe</span>
         </h1>

@@ -57,7 +57,6 @@ function App() {
                 <Route path="manage-blog" element={<ManageBlog />} />
                 <Route path="manage-blog/:id" element={<EditBlog />} />
                 <Route path="analytics" element={<Analytics />} />
-                <Route path="createblog" element={<CreateBlog />} />
             </Route>
             <Route path="createblog" element={<CreateBlog />} />
             <Route path="profile" element={<Profile />} /> 
