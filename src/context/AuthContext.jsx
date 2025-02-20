@@ -1,8 +1,8 @@
+// AuthProvider.js
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import PropTypes from "prop-types";
-
 
 const AuthContext = createContext();
 
@@ -11,7 +11,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, 
+    const unsubscribe = onAuthStateChanged(
+      auth,
       (currentUser) => {
         setUser(currentUser);
         setLoading(false);
@@ -22,10 +23,9 @@ export function AuthProvider({ children }) {
       }
     );
 
-    return () => unsubscribe(); // Cleanup when unmounting
+    return () => unsubscribe(); // Cleanup on unmount
   }, []);
 
-  // Logout function
   const logout = async () => {
     try {
       await signOut(auth);

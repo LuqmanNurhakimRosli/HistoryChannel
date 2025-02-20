@@ -1,3 +1,4 @@
+// Login.js
 import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
@@ -5,40 +6,50 @@ import {
   getRedirectResult,
   GoogleAuthProvider,
   signInWithRedirect,
-  getAuth
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
-import { isMobile } from 'react-device-detect';
+import { isMobile } from "react-device-detect";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from "react-icons/fc";
+import { auth } from "../firebaseConfig";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const auth = getAuth();
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
-    // Check for redirect login result when the page loads
+    // Set authentication persistence
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => console.log("Auth persistence set to localStorage"))
+      .catch((error) => console.error("Persistence error:", error));
+
+    // Check for Google login redirect result
     getRedirectResult(auth)
       .then((result) => {
         if (result?.user) {
+          console.log("Redirect Login Success:", result.user);
           toast.success(`Welcome, ${result.user.displayName}!`);
           navigate("/dashboard");
+        } else {
+          console.log("No user found from redirect login.");
         }
       })
       .catch((err) => {
         console.error("Google Redirect Login Error:", err);
         toast.error("Google login failed!");
       });
-  }, [auth, navigate]);
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Login Successful! Redirecting...");
