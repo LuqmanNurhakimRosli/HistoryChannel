@@ -5,9 +5,9 @@ import {
   getRedirectResult,
   GoogleAuthProvider,
   signInWithRedirect,
+  getAuth
 } from "firebase/auth";
-import {isMobile} from 'react-device-detect';
-import { auth } from "../firebaseConfig";
+import { isMobile } from 'react-device-detect';
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,22 +17,24 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const auth = getAuth();
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
+    // Check for redirect login result when the page loads
     getRedirectResult(auth)
       .then((result) => {
         if (result?.user) {
-          toast.success("Logged in with Google!");
+          toast.success(`Welcome, ${result.user.displayName}!`);
           navigate("/dashboard");
         }
       })
       .catch((err) => {
-        console.error(err);
+        console.error("Google Redirect Login Error:", err);
         toast.error("Google login failed!");
       });
-  }, [navigate]);
+  }, [auth, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,26 +44,26 @@ function Login() {
       toast.success("Login Successful! Redirecting...");
       navigate("/dashboard");
     } catch (err) {
-      console.error(err);
+      console.error("Login Error:", err);
       setError("Invalid email or password");
       toast.error("Login Failed");
     }
   };
 
-  const handleGoogleLogin= async () => {
+  const handleGoogleLogin = async () => {
     try {
       if (isMobile) {
-        await signInWithRedirect (auth, googleProvider)
+        await signInWithRedirect(auth, googleProvider);
       } else {
-        await signInWithPopup(auth, googleProvider);
+        const result = await signInWithPopup(auth, googleProvider);
+        toast.success(`Welcome, ${result.user.displayName}!`);
+        navigate("/dashboard");
       }
-      toast.success("Logged in with Google!");
-      navigate("/dashboard");
     } catch (err) {
-      console.error(err);
+      console.error("Google Login Error:", err);
       toast.error("Google login failed!");
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -104,7 +106,8 @@ function Login() {
           </button>
         </div>
 
-        <p className="mt-4 text-gray-600"> Do not have an account?{" "}
+        <p className="mt-4 text-gray-600">
+          Do not have an account?{" "}
           <Link to="/register" className="text-blue-500 font-medium">
             Register here
           </Link>

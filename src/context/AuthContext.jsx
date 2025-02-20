@@ -10,17 +10,25 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    const unsubscribe = onAuthStateChanged(auth, 
+      (currentUser) => {
+        setUser(currentUser);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Auth State Change Error:", error);
+        setLoading(false);
+      }
+    );
+
+    return () => unsubscribe(); // Cleanup when unmounting
   }, []);
 
   // Logout function
   const logout = async () => {
     try {
       await signOut(auth);
+      setUser(null);
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -28,7 +36,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ user, logout }}>
-      {!loading && children}
+      {loading ? <p>Loading...</p> : children}
     </AuthContext.Provider>
   );
 }
@@ -36,8 +44,6 @@ export function AuthProvider({ children }) {
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
-
 
 export function useAuth() {
   return useContext(AuthContext);
