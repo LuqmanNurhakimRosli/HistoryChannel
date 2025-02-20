@@ -2,17 +2,15 @@ import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
   getRedirectResult,
   GoogleAuthProvider,
-  signInWithRedirect,
   setPersistence,
   browserLocalPersistence,
   onAuthStateChanged,
 } from "firebase/auth";
-import { isMobile } from "react-device-detect";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../firebaseConfig";
 
@@ -27,17 +25,15 @@ function Login() {
     // Listen for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("User already logged in:", user);
         toast.success(`Welcome back, ${user.displayName || user.email}!`);
         navigate("/dashboard");
       }
     });
 
-    // Handle Google redirect result after login
+    // Handle Google redirect login results
     getRedirectResult(auth)
       .then((result) => {
         if (result?.user) {
-          console.log("Google Redirect Login Success:", result.user);
           toast.success(`Welcome, ${result.user.displayName || "User"}!`);
           navigate("/dashboard");
         }
@@ -47,7 +43,7 @@ function Login() {
         toast.error("Google login failed!");
       });
 
-    return () => unsubscribe(); // Cleanup listener on component unmount
+    return () => unsubscribe(); // Cleanup listener on unmount
   }, [navigate]);
 
   const handleLogin = async (e) => {
@@ -69,12 +65,11 @@ function Login() {
   const handleGoogleLogin = async () => {
     try {
       await setPersistence(auth, browserLocalPersistence);
-  
-      if (isMobile) {
-        console.log("Redirecting to Google Sign-in for mobile...");
+
+      // Check screen width instead of relying on 'isMobile'
+      if (window.innerWidth < 768) { // Mobile screens
         await signInWithRedirect(auth, googleProvider);
       } else {
-        console.log("Using popup for Google Sign-in...");
         const result = await signInWithPopup(auth, googleProvider);
         toast.success(`Welcome, ${result.user.displayName || "User"}!`);
         navigate("/dashboard");

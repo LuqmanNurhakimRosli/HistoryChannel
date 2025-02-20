@@ -1,4 +1,3 @@
-// AuthProvider.js
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -11,17 +10,10 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (currentUser) => {
-        setUser(currentUser);
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Auth State Change Error:", error);
-        setLoading(false);
-      }
-    );
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
 
     return () => unsubscribe(); // Cleanup on unmount
   }, []);
