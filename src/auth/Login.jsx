@@ -64,7 +64,9 @@ function Login() {
   const handleGoogleLogin = async () => {
     try {
       if (isMobile) {
-        await signInWithRedirect(auth, googleProvider);
+        const result = await signInWithRedirect(auth, googleProvider);
+        toast.success(`Welcome, ${result.user.displayName}!`);
+        navigate("/dashboard");
       } else {
         const result = await signInWithPopup(auth, googleProvider);
         toast.success(`Welcome, ${result.user.displayName}!`);
