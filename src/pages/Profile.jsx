@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig"; // Firestore
-import profileDefault from "../assets/default-profile.png"; // Default profile image
+import profileDefault from "../assets/default-profile.jpeg"; // Default profile image
 
 const Profile = () => {
   const { user } = useAuth(); // Get user from context
