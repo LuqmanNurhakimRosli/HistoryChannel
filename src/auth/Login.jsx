@@ -1,4 +1,3 @@
-// Login.js
 import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
@@ -8,6 +7,7 @@ import {
   signInWithRedirect,
   setPersistence,
   browserLocalPersistence,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { isMobile } from "react-device-detect";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,26 +24,34 @@ function Login() {
   const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
-    // Set authentication persistence
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => console.log("Auth persistence set to localStorage"))
-      .catch((error) => console.error("Persistence error:", error));
+    // Ensure user is still logged in
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("User already logged in:", user);
+        toast.success(`Welcome back, ${user.displayName || user.email}!`);
+        navigate("/dashboard");
+      }
+    });
 
-    // Check for Google login redirect result
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) {
-          console.log("Redirect Login Success:", result.user);
-          toast.success(`Welcome, ${result.user.displayName}!`);
-          navigate("/dashboard");
-        } else {
-          console.log("No user found from redirect login.");
-        }
-      })
-      .catch((err) => {
-        console.error("Google Redirect Login Error:", err);
-        toast.error("Google login failed!");
-      });
+    // Handle Google login redirect result
+    if (!auth.currentUser) {
+      getRedirectResult(auth)
+        .then((result) => {
+          if (result?.user) {
+            console.log("Redirect Login Success:", result.user);
+            toast.success(`Welcome, ${result.user.displayName}!`);
+            navigate("/dashboard");
+          } else {
+            console.log("No user found from redirect login.");
+          }
+        })
+        .catch((err) => {
+          console.error("Google Redirect Login Error:", err);
+          toast.error("Google login failed!");
+        });
+    }
+
+    return () => unsubscribe(); // Cleanup listener
   }, [navigate]);
 
   const handleLogin = async (e) => {
@@ -51,6 +59,7 @@ function Login() {
     setError("");
 
     try {
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Login Successful! Redirecting...");
       navigate("/dashboard");
@@ -63,6 +72,8 @@ function Login() {
 
   const handleGoogleLogin = async () => {
     try {
+      await setPersistence(auth, browserLocalPersistence);
+
       if (isMobile) {
         await signInWithRedirect(auth, googleProvider);
       } else {
@@ -77,7 +88,7 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900 ">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full text-center">
         <h2 className="text-3xl font-extrabold text-gray-800">Welcome Back!</h2>
         <p className="text-gray-500 mb-6">Sign in to continue</p>
