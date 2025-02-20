@@ -94,9 +94,9 @@ const CreateBlog = () => {
               required
             >
               <option value="" disabled>Select Genre</option>
+              <option value="Casual">Casual</option>
               <option value="Action">Action</option>
               <option value="Comedy">Comedy</option>
-              <option value="Casual">Casual</option>
               <option value="Scary">Scary</option>
             </select>
 

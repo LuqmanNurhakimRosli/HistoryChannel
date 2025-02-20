@@ -104,9 +104,9 @@ const EditBlog = () => {
               required
             >
               <option value="" disabled selected>Select Genre</option>
+              <option value="Casual">Casual</option>
               <option value="Action">Action</option>
               <option value="Comedy">Comedy</option>
-              <option value="Casual">Casual</option>
               <option value="Scary">Scary</option>
             </select>
 
