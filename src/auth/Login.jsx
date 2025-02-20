@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
-  signInWithPopup,
+  // signInWithPopup,
   getRedirectResult,
   GoogleAuthProvider,
   signInWithRedirect,
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-import { isMobile } from "react-device-detect";
+// import { isMobile } from "react-device-detect";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
