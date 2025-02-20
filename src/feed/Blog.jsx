@@ -9,24 +9,23 @@ function Blog() {
   const formatDate = (dateString) => {
     if (!dateString) return "Unknown"; // Handle missing dates
     try {
-      // Check if the input is a Date object
       if (dateString instanceof Date) {
-        return formatDistanceToNow(dateString, { addSuffix: true }); // Format as "x time ago"
+        return formatDistanceToNow(dateString, { addSuffix: true });
       }
-      
-      // If it's an ISO string, parse it
-      const date = parseISO(dateString); // Parse ISO date
-      return formatDistanceToNow(date, { addSuffix: true }); // Format as "x time ago"
+      const date = parseISO(dateString);
+      return formatDistanceToNow(date, { addSuffix: true });
     } catch (error) {
-      console.error("Error parsing date:", error); // Log the error
-      return "Unknown"; // Return "Unknown" if parsing fails
+      console.error("Error parsing date:", error);
+      return "Unknown";
     }
   };
 
-  const publicPosts = blog.filter((post) => post.publishOption === true || post.publishOption === "forEveryone");
+  const publicPosts = blog.filter(
+    (post) => post.publishOption === true || post.publishOption === "forEveryone"
+  );
 
   return (
-    <section className="w-full  py-8">
+    <section className="w-full py-8 ">
       <div className="container mx-auto px-4">
         {loading ? (
           <div className="flex justify-center items-center h-40">
@@ -35,15 +34,15 @@ function Blog() {
         ) : error ? (
           <div className="text-red-500 text-center">{error.message}</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {publicPosts.map((post) => (
               <div
                 key={post.id}
-                className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105"
+                className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl"
               >
                 <Link to={`/blog/${post.id}`} className="block p-6">
                   <div className="space-y-3">
-                    <h2 className="text-2xl font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors">
                       {post.title}
                     </h2>
                     <p className="text-sm text-gray-600">

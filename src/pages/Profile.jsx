@@ -56,24 +56,29 @@ const Profile = () => {
   };
 
   return (
-    <div className="mx-auto max-w-4xl p-4 bg-gray-100 py-10"> {/* Adjusted padding and margin */}
-      <div className="flex flex-col md:flex-row justify-center items-center space-x-0 md:space-x-6 mb-6">
-        <div className="w-32 h-32 mb-4 md:mb-0">
+    <div className="min-h-full mx-auto max-w-4xl p-4 bg-gray-100 py-10">
+      <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left md:space-x-6">
+        {/* Profile Image */}
+        <div className="justify-center items-center flex gap-10">
+        <div className="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-0">
           <img
             src={profileDefault}
             alt="Default Profile"
             className="w-full h-full rounded-full object-cover"
           />
         </div>
+
+        {/* User Info */}
         <div className="flex-1">
-          {/* Username & Email */}
-          <h2 className="text-3xl font-semibold text-gray-900">{user?.displayName}</h2>
-          <p className="text-lg text-gray-700">{user?.email}</p>
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 break-all">{user?.displayName}</h2>
+          <p className="text-lg text-gray-700 break-all">{user?.email}</p>
         </div>
+        </div>
+        
       </div>
-  
-      <hr className="border-t border-gray-200 mb-6" />
-  
+
+      <hr className="border-t border-gray-200 my-6" />
+
       {/* Change Username Section */}
       <div className="mb-6">
         <label htmlFor="username" className="block text-lg font-medium text-gray-700">
@@ -87,16 +92,20 @@ const Profile = () => {
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-  
+
       {/* Error or Success Message */}
-      {error && <p className="text-red-500 mb-2">{error}</p>}
-      {success && <p className="text-green-500 mb-2">{success}</p>}
-  
+      {error && <p className="text-red-500 mb-2 text-sm">{error}</p>}
+      {success && <p className="text-green-500 mb-2 text-sm">{success}</p>}
+
       {/* Save Button */}
       <button
         onClick={handleSave}
         disabled={isLoading}
-        className={`w-full mt-4 px-4 py-2 rounded ${isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+        className={`w-full mt-4 px-4 py-2 rounded-md text-white transition duration-300 ${
+          isLoading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        }`}
       >
         {isLoading ? "Saving..." : "Save Changes"}
       </button>
