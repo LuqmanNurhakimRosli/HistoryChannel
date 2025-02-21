@@ -40,11 +40,10 @@ function App() {
 
         <Route element={<FeedLayout />}>
           <Route path="blog" element={<Blog filterType={useOutletContext} />} />    
-          <Route path="/blog/:title/:id" element={<BlogDetail />} />
           <Route path="/personal" element={<PrivateBlog />} />
-          <Route path="/personal/:title/:id" element={<BlogDetail />} />
         </Route>
-
+        <Route path="/blog/:title/:id" element={<BlogDetail />} />
+        <Route path="/personal/:title/:id" element={<BlogDetail />} />
 
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -58,6 +57,7 @@ function App() {
                 <Route path="manage-blog/:id" element={<EditBlog />} />
                 <Route path="analytics" element={<Analytics />} />
             </Route>
+            
             <Route path="createblog" element={<CreateBlog />} />
             <Route path="profile" element={<Profile />} /> 
           </Route>

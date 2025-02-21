@@ -98,7 +98,8 @@ const BlogDetail = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white shadow-md rounded-lg flex-grow">
+    <div className="flex flex-col py-12 min-h-screen">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white shadow-md rounded-lg flex-grow">
       <Link to="/blog" className="block text-blue-600 hover:text-blue-800 mb-4 font-semibold">&larr; Back to Blog</Link>
 
       <article className="prose max-w-none lg:prose-xl space-y-4">
@@ -156,6 +157,8 @@ const BlogDetail = () => {
         </div>
       </section>
     </div>
+    </div>
+
   );
 };
 
