@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Comment from "../comment/Comment";
 import CommentForm from "../comment/CommentForm";
 import { useAuth } from "../context/AuthContext";
@@ -98,30 +98,27 @@ const BlogDetail = () => {
   };
 
   return (
-    <div className="flex flex-col py-12 min-h-screen">
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white shadow-md rounded-lg flex-grow">
-      <Link to="/blog" className="block text-blue-600 hover:text-blue-800 mb-4 font-semibold">&larr; Back to Blog</Link>
+    <div className=" py-2 ">
+    <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white shadow-md rounded-lg ">
+      {/* <Link to="/blog" className="block text-blue-600 hover:text-blue-800 mb-4 ">&larr; Back to Blog</Link> */}
 
-      <article className="prose max-w-none lg:prose-xl space-y-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+      <article className="prose font-mono max-w-none lg:prose-xl space-y-4">
+        <h1 className="text-3xl font-bold text-gray-900">
           {isTranslated ? translatedTitle || decodedTitle : decodedTitle}
         </h1>
-        <div className="text-gray-600 flex flex-wrap gap-2 text-sm">
+        <div className="text-gray-600 flex flex-wrap gap-2 text-xl">
           <strong>{blog.author}</strong>
           <span>|</span>
           <span>{formattedDate}</span>
           <span>|</span>
           <span>{blog.genre}</span>
         </div>
-        <p className="text-gray-800 leading-relaxed text-base sm:text-lg">
-          {isTranslated ? translatedContent || blog.content : blog.content}
-        </p>
         <div className="flex items-center gap-4 mt-4 ">
-          <span className="text-black">👁 Views: {blog.views}</span>
+          <span className="text-black"> Views: {blog.views}</span>
           <button
             onClick={handleLike}
             disabled={liked}
-            className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+            className="px-4 py-1 bg-red-400 text-white rounded-md hover:bg-red-300"
           >
             ❤️ Like {blog.likes}
           </button>
@@ -132,6 +129,10 @@ const BlogDetail = () => {
             {isTranslated ? "Show Original" : "Translate"}
           </button>
         </div>
+        <p className="text-gray-700 font-mono leading-relaxed text-xl">
+          {isTranslated ? translatedContent || blog.content : blog.content}
+        </p>
+        
       </article>
 
       <section className="mt-8 border-t pt-6">
