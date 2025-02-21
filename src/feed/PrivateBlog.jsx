@@ -90,7 +90,7 @@ function PrivateBlog() {
           </>
         ) : (
           <div className="text-center">
-            <h2 className="text-lg sm:text-xl text-gray-700">
+            <h2 className="text-lg sm:text-xl text-white">
               Log in to see your private blog
             </h2>
           </div>
