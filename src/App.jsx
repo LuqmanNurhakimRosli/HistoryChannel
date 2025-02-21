@@ -40,9 +40,9 @@ function App() {
 
         <Route element={<FeedLayout />}>
           <Route path="blog" element={<Blog filterType={useOutletContext} />} />    
-          <Route path="/blog/:id" element={<BlogDetail />} />
+          <Route path="/blog/:title/:id" element={<BlogDetail />} />
           <Route path="/personal" element={<PrivateBlog />} />
-          <Route path="/personal/:id" element={<BlogDetail />} />
+          <Route path="/personal/:title/:id" element={<BlogDetail />} />
         </Route>
 
 

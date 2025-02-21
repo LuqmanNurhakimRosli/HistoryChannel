@@ -28,7 +28,7 @@ function Home() {
           </a>
 
           <a
-            href="/dashboard/createblog"
+            href="/createblog"
             className="px-8 py-4 text-xl font-semibold text-white bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             Create a Blog ✍️

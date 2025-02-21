@@ -40,13 +40,17 @@ function Blog() {
                 key={post.id}
                 className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl"
               >
-                <Link to={`/blog/${post.id}`} className="block p-6">
+                <Link
+                  to={`/blog/${post.title.replace(/ /g, "-")}/${post.id}`}
+                  className="block p-6"
+                >
                   <div className="space-y-3">
                     <h2 className="text-lg sm:text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors">
                       {post.title}
                     </h2>
                     <p className="text-sm text-gray-600">
-                      <span className="font-medium">{post.author}</span> | {formatDate(post.createdAt)}
+                      <span className="font-medium">{post.author}</span> |{" "}
+                      {formatDate(post.createdAt)}
                     </p>
                   </div>
                 </Link>

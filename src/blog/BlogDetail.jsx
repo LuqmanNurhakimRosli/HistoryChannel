@@ -7,8 +7,9 @@ import { getCommentsByPostId } from "../api/commentApi";
 import blogApi from "../api/blogApi";
 import { formatDistanceToNow } from "date-fns";
 
+
 const BlogDetail = () => {
-  const { id: blogId } = useParams();
+  const { title,id: blogId } = useParams();
   const { user } = useAuth();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
@@ -16,6 +17,7 @@ const BlogDetail = () => {
   const [translatedContent, setTranslatedContent] = useState(null);
   const [isTranslated, setIsTranslated] = useState(false);
   const [liked, setLiked] = useState(false);
+  const decodedTitle = title.replaceAll(/-/g, " ");
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -101,7 +103,7 @@ const BlogDetail = () => {
 
       <article className="prose max-w-none lg:prose-xl space-y-4">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-          {isTranslated ? translatedTitle || blog.title : blog.title}
+          {isTranslated ? translatedTitle || decodedTitle : decodedTitle}
         </h1>
         <div className="text-gray-600 flex flex-wrap gap-2 text-sm">
           <strong>{blog.author}</strong>
