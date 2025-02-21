@@ -42,8 +42,8 @@ function App() {
           <Route path="blog" element={<Blog filterType={useOutletContext} />} />    
           <Route path="/personal" element={<PrivateBlog />} />
         </Route>
-        <Route path="/blog/:title/:id" element={<BlogDetail />} />
-        <Route path="/personal/:title/:id" element={<BlogDetail />} />
+        <Route path="/blog/:author/:title/:id" element={<BlogDetail />} />
+        <Route path="/personal/:author/:title:id" element={<BlogDetail />} />
 
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
