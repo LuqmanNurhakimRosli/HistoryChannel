@@ -101,9 +101,11 @@ function PrivateBlog() {
             )}
           </>
         ) : (
-          <div className="text-center bg-blue-500 p-8 rounded-lg shadow-md text-white">
-            <h2 className="text-xl font-semibold">Log in to see your private blog</h2>
-          </div>
+          <Link to="/login">
+            <div className="w-4/10 mx-auto text-center bg-blue-500 p-8 rounded-lg shadow-md text-white">
+              <h2 className="text-xl font-semibold">🤷‍♀️ Log in to see your private blog</h2>
+            </div>
+          </Link>
         )}
       </div>
     </section>
