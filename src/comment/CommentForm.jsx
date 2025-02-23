@@ -61,11 +61,11 @@ const CommentForm = ({ postId, refreshComments, className = "" }) => {
   return (
     <form 
       onSubmit={handleSubmit} 
-      className={`bg-gray-100 p-4 rounded-lg space-y-4 ${className}`}
+      className={`bg-gray-800 p-4 rounded-lg space-y-4 ${className}`}
     >
       {username && (
-        <p className="text-gray-700 text-sm">
-          Commenting as: <strong className="text-gray-900">{username}</strong>
+        <p className="text-gray-300 text-sm">
+          Commenting as: <strong className="text-gray-100">{username}</strong>
         </p>
       )}
       <textarea
@@ -73,7 +73,7 @@ const CommentForm = ({ postId, refreshComments, className = "" }) => {
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Write a comment..."
         required
-        className="text-black w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y min-h-[100px]"
+        className="text-gray-300 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-y min-h-[100px]"
       />
       <button 
         type="submit" 

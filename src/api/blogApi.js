@@ -17,6 +17,7 @@ export const getPosts = async () => {
     ...doc.data(),
     createdAt: doc.data().createdAt.toDate(),
     authorId: doc.data().authorId,
+    header: doc.data().header,
     views: doc.data().views || 0,
     likes: doc.data().likes || 0,
   }));
@@ -41,7 +42,7 @@ export const getPostById = async (id) => {
 };
 
 // Add a new blog post
-export const addPost = async (title, content, author, authorId, genre, publishOption) => {
+export const addPost = async (title, content, author, authorId, genre, publishOption,header) => {
   const postData = {
     title,
     content,
@@ -50,6 +51,7 @@ export const addPost = async (title, content, author, authorId, genre, publishOp
     createdAt: new Date(),
     genre,
     publishOption,
+    header,
     views: 0,
     likes: 0,
   };
@@ -89,9 +91,9 @@ export const viewPost = async (id) => {
 };
 
 // Update blog post
-export const updatePost = async (id, title, content, genre, publishOption) => {
+export const updatePost = async (id, title, content, genre, publishOption, header) => {
   const postRef = doc(db, "blog", id);
-  await updateDoc(postRef, { title, content, genre, publishOption });
+  await updateDoc(postRef, { title, content, genre, publishOption, header });
 };
 
 // Delete blog post

@@ -23,7 +23,7 @@ const Comment = ({ comment, refreshComments, className = "" }) => {
     : "Just now";
 
   return (
-    <div className={`flex items-start space-x-4 p-4 border-b border-gray-300 ${className}`}>
+    <div className={`flex items-start space-x-4 p-4 border-b border-to-blue-700 ${className}`}>
       <div className="flex-shrink-0">
         {/* Placeholder for profile picture */}
         <img
@@ -35,19 +35,21 @@ const Comment = ({ comment, refreshComments, className = "" }) => {
       <div className="flex-1">
         <div className="flex justify-between">
           <div>
-            <p className="font-semibold text-gray-900">{comment.username}</p>
-            <p className="text-gray-600">{comment.text}</p>
+            <p className="font-semibold text-gray-300">{comment.username}</p>
+            <p className="text-gray-300">{comment.text}</p>
           </div>
           <p className="text-sm text-gray-500">{formattedDate}</p>
         </div>
         {user && user.uid === comment.userId && (
-          <button
-          onClick={handleDelete}
-          className="bg-red-500 text-white text-sm font-semibold py-1 px-3 rounded-md hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200"
-          aria-label="Delete comment"
-        >
-          Delete
-        </button>
+          <div className="flex justify-end">
+            <button
+            onClick={handleDelete}
+            className="bg-red-500 text-white text-sm font-semibold py-1 px-3 rounded-md hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200"
+            aria-label="Delete comment"
+          >
+            Delete
+          </button>
+        </div>
         )}
       </div>
     </div>

@@ -36,6 +36,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase": "^11.3.0",
+    "framer-motion": "^12.4.7",
     "i18next": "^24.2.2",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
