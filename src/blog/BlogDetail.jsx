@@ -125,12 +125,17 @@ const BlogDetail = () => {
               {user ? (
                 <CommentForm postId={blogId} refreshComments={refreshComments} />
               ) : (
-                <p className="text-lg bg-yellow-900 p-4 rounded-lg text-center text-gray-100">
-                  You must be logged in to add a comment.
-                  <div>
-                    <Link to="/login" className="text-blue-400 ml-2">Login</Link>
-                  </div>
-                </p>
+            <div className="bg-gray-800 p-6 rounded-xl text-center text-gray-200 shadow-lg border border-gray-700">
+              <p className="text-lg font-semibold">You must be logged in to add a comment.</p>
+              <div className="mt-4">
+                <Link 
+                  to="/login" 
+                  className="inline-block px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-medium rounded-lg transition-all shadow-md"
+                >
+                  🔑 Login to Comment
+                </Link>
+              </div>
+            </div>
               )}
             </div>
           </section>
