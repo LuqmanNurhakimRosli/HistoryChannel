@@ -26,7 +26,7 @@ function Blog() {
   );
 
   return (
-    <section className="w-full py-12 bg-gray-900">
+    <section className="w-full py-12 bg-gray-900 rounded-2xl">
       <div className="container mx-auto px-6">
 
         {/* Loading & Error Handling */}
@@ -37,7 +37,7 @@ function Blog() {
         ) : error ? (
           <div className="text-red-500 text-center">{error.message}</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
             {publicPosts.map((post) => (
               <div
                 key={post.id}

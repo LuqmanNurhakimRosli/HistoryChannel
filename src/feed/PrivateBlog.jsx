@@ -37,7 +37,7 @@ function PrivateBlog() {
 
   if (loading)
     return (
-      <section className="w-full py-8 bg-gray-50">
+      <section className="w-full py-8 bg-gray-800">
         <div className="container mx-auto px-4 flex justify-center items-center h-40">
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -54,7 +54,7 @@ function PrivateBlog() {
     );
 
   return (
-    <section className="w-full py-12 bg-gray-900 min-h-screen justify-center items-center">
+    <section className="w-full py-12 bg-gray-900 min-h-screen justify-center items-center rounded-2xl">
       <div className="container mx-auto px-6">
         {user ? (
           <>
@@ -64,7 +64,7 @@ function PrivateBlog() {
                 You have no private posts.
               </p>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {privatePosts.map((post) => (
                   <div
                     key={post.id}

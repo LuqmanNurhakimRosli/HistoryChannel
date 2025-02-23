@@ -5,6 +5,7 @@ import CommentForm from "../comment/CommentForm";
 import { useAuth } from "../context/AuthContext";
 import { getCommentsByPostId } from "../api/commentApi";
 import blogApi from "../api/blogApi";
+import useBlogPosts from "../hooks/useBlogPosts";
 import { formatDistanceToNow } from "date-fns";
 import defaultHeader from "../assets/header-blog/casual.jpg";
 
@@ -13,10 +14,9 @@ const BlogDetail = () => {
   const { user } = useAuth();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
-  const [translation, setTranslation] = useState({ title: "", content: "" });
-  const [isTranslated, setIsTranslated] = useState(false);
   const [liked, setLiked] = useState(false);
   const decodedTitle = title.replace(/-/g, " ");
+  const { loading, error } = useBlogPosts();
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -70,72 +70,46 @@ const BlogDetail = () => {
     }
   };
 
-  const translateText = async () => {
-    if (!blog) return;
-    if (isTranslated) {
-      setIsTranslated(false);
-      return;
-    }
-
-    try {
-      const response = await fetch("https://libretranslate.com/translate", {
-        method: "POST",
-        body: JSON.stringify({
-          q: `${blog.title}\n${blog.content}`,
-          source: "auto",
-          target: "ms",
-          format: "text",
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      const [translatedTitle, translatedContent] = data.translatedText.split("\n");
-      setTranslation({ title: translatedTitle, content: translatedContent });
-      setIsTranslated(true);
-    } catch (error) {
-      console.error("Translation error:", error);
-    }
-  };
-
-  if (!blog) return <div className="flex justify-center items-center h-screen text-2xl text-gray-900 dark:text-gray-100">Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-40">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
+    <section className="w-full">
     <div className="py-4 bg-gray-900 min-h-screen flex justify-center">
       <div className="max-w-3xl w-full mx-4 md:mx-auto bg-gray-800 shadow-xl rounded-lg overflow-hidden">
         <div
           className="w-full h-60 sm:h-80 bg-cover bg-center transition-all duration-300"
-          style={{ backgroundImage: `url(${blog.header ? blog.header : defaultHeader})` }}
+          style={{ backgroundImage: `url(${blog?.header ? blog.header : defaultHeader})` }}
         ></div>
-  
+
         <div className="p-6">
           <article className="prose max-w-none lg:prose-lg dark:prose-invert">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-100">{isTranslated ? translation.title || decodedTitle : decodedTitle}</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-100">{decodedTitle}</h1>
             <div className="text-lg text-gray-300 flex flex-wrap gap-2 mt-2">
-              <strong className="text-gray-100">{blog.author}</strong>
-              <span>| {formatDistanceToNow(new Date(blog.createdAt), { addSuffix: true })}</span>
-              <span>| {blog.genre}</span>
+              <strong className="text-gray-100">{blog?.author}</strong>
+              <span>| {blog ? formatDistanceToNow(new Date(blog.createdAt), { addSuffix: true }) : ""}</span>
+              <span>| {blog?.genre}</span>
             </div>
-  
+
             <div className="flex flex-wrap gap-4 mt-6 items-center">
-              <span className="text-lg text-gray-300">👀 Views: {blog.views}</span>
+              <span className="text-lg text-gray-300">👀 Views: {blog?.views}</span>
               <button
                 onClick={handleLike}
                 disabled={liked}
                 className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-400 disabled:opacity-50 transition-all"
               >
-                ❤️ Like {blog.likes}
-              </button>
-              <button
-                onClick={translateText}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500 transition-all"
-              >
-                {isTranslated ? "Show Original" : "Translate"}
+                ❤️ Like {blog?.likes}
               </button>
             </div>
-  
-            <p className="text-lg leading-relaxed mt-6 text-gray-300">{isTranslated ? translation.content || blog.content : blog.content}</p>
+
+            <p className="text-lg leading-relaxed mt-6 text-gray-300">{blog?.content}</p>
           </article>
-  
+
           <section className="mt-10 border-t pt-6">
             <h2 className="text-2xl font-semibold text-gray-100">💬 Comments</h2>
             {comments.length > 0 ? (
@@ -163,6 +137,7 @@ const BlogDetail = () => {
         </div>
       </div>
     </div>
+    </section>
   );
 };
 
