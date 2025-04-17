@@ -21,9 +21,17 @@ function Blog() {
     }
   };
 
+  // Filter public posts
   const publicPosts = blog.filter(
     (post) => post.publishOption === true || post.publishOption === "forEveryone"
   );
+
+  // Sort posts by date (newest first)
+  const sortedPosts = [...publicPosts].sort((a, b) => {
+    const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+    const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+    return dateB - dateA; // For descending order (newest first)
+  });
 
   return (
     <section className="w-full py-12 bg-gray-900 rounded-2xl">
@@ -38,7 +46,7 @@ function Blog() {
           <div className="text-red-500 text-center">{error.message}</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
-            {publicPosts.map((post) => (
+            {sortedPosts.map((post) => (
               <div
                 key={post.id}
                 className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl duration-300"

@@ -14,7 +14,6 @@ const BlogDetail = () => {
   const { user } = useAuth();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
-  const [liked, setLiked] = useState(false);
   const decodedTitle = title.replace(/-/g, " ");
   const { loading, error } = useBlogPosts();
 
@@ -23,13 +22,6 @@ const BlogDetail = () => {
       try {
         const fetchedBlog = await blogApi.getPostById(blogId);
         setBlog(fetchedBlog);
-
-        const viewedPosts = JSON.parse(localStorage.getItem("viewedPosts")) || [];
-        if (!viewedPosts.includes(blogId)) {
-          await blogApi.viewPost(blogId);
-          fetchedBlog.views += 1;
-          localStorage.setItem("viewedPosts", JSON.stringify([...viewedPosts, blogId]));
-        }
       } catch (error) {
         console.error("Error fetching blog post:", error);
       }
@@ -41,7 +33,11 @@ const BlogDetail = () => {
     const fetchComments = async () => {
       try {
         const commentsData = await getCommentsByPostId(blogId);
-        setComments(commentsData);
+        // Sort comments by date - newest first
+        const sortedComments = commentsData.sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setComments(sortedComments);
       } catch (error) {
         console.error("Error fetching comments:", error);
       }
@@ -52,21 +48,13 @@ const BlogDetail = () => {
   const refreshComments = async () => {
     try {
       const commentsData = await getCommentsByPostId(blogId);
-      setComments(commentsData);
+      // Sort comments by date - newest first
+      const sortedComments = commentsData.sort((a, b) => 
+        new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setComments(sortedComments);
     } catch (error) {
       console.error("Error refreshing comments:", error);
-    }
-  };
-
-  const handleLike = async () => {
-    if (!liked) {
-      try {
-        await blogApi.likePost(blogId);
-        setBlog((prev) => ({ ...prev, likes: prev.likes + 1 }));
-        setLiked(true);
-      } catch (error) {
-        console.error("Error liking post:", error);
-      }
     }
   };
 
@@ -94,17 +82,6 @@ const BlogDetail = () => {
                 <strong className="text-gray-100">{blog?.author}</strong>
                 <span>| {blog ? formatDistanceToNow(new Date(blog.createdAt), { addSuffix: true }) : ""}</span>
                 <span>| {blog?.genre}</span>
-              </div>
-
-              <div className="flex flex-wrap gap-4 mt-6 items-center">
-                <span className="text-lg text-gray-300">👀 Views: {blog?.views}</span>
-                <button
-                  onClick={handleLike}
-                  disabled={liked}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-400 disabled:opacity-50 transition-all"
-                >
-                  ❤️ Like {blog?.likes}
-                </button>
               </div>
 
               {/* Word-like formatted content section */}
